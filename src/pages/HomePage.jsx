@@ -11,12 +11,21 @@ import { createStructuredSelector } from 'reselect';
 
 import { withRouter } from 'react-router-dom';
 
+import AddUser from '../components/addUser.component'
+
 const HomePage = ({user}) => (
     <div>
         <Spinner animation="grow" />
         Welcome to Homepage Mr. {user.FULL_NAME.S}
+        <AddUser/>
+
     </div>
 )
+
+// class HomePage extends React.Component {
+
+// }
+
 
 const mapStateToProps = createStructuredSelector({
     user: selectUser

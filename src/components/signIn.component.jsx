@@ -24,7 +24,7 @@ class SignIn extends React.Component {
         }
     }
 
-    handleChange = async (fieldName, event) => {
+    handleChange = (fieldName, event) => {
         event.preventDefault();
         this.setState({
             [fieldName]: event.target.value
@@ -38,19 +38,19 @@ class SignIn extends React.Component {
             errorMessage: null
         })
 
-
         const data = await getUserByEmailAndPassword({email, password: MD5(password).toString()})
 
         /*
         -- Returned Fields --
-        $metadata: {httpStatusCode: 200, requestId: "ROIJ918DSHCM4F6C9JHS2JRH3BVV4KQNSO5AEMVJF66Q9ASUAAJG", extendedRequestId: undefined, cfId: undefined, attempts: 1, …}
+        $metadata: {httpStatusCode: 200, requestId: "U0BFD6IMK24AD5SHFHCPQO593JVV4KQNSO5AEMVJF66Q9ASUAAJG", extendedRequestId: undefined, cfId: undefined, attempts: 1, …}
         ConsumedCapacity: undefined
         Count: 1
-        Items: [Object] (1)
+        Items: Array (1)
+            {PASSWORD: {S: "450853c01ee1fe1db4dec358f1b6e9ff"}, BAND: {S: "superuser"}, EMAIL: {S: "b00085065@aus.edu"}, FULL_NAME: {S: "ameen ayub"}}
         LastEvaluatedKey: undefined
         ScannedCount: 1
         */
-        
+
         if(data.$metadata.httpStatusCode === 200){ // Successful Connection
             if(data.Count === 1){ // User found in database
                 this.props.setUserInStore(data.Items[0])
@@ -67,7 +67,6 @@ class SignIn extends React.Component {
                 errorMessage: 'Error. Please check you connection and try again'
             })
         }
-             
     }
 
     render() {return (
