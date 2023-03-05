@@ -6,11 +6,13 @@ import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
 import Header from "./components/header.component";
+import ManageUsersPage from "./pages/ManageUsersPage";
 
 import AuthenticatedRoute from "./components/authenticatedRoute.component";
+import AuthenticatedRouteNonDriver from "./components/authenticatedRoute.component";
 
-import { AiOutlineUser } from 'react-icons/ai';
-import { IconContext } from "react-icons";
+// import { AiOutlineUser } from 'react-icons/ai';
+// import { IconContext } from "react-icons";
 
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/login" component={LoginPage} />
         <AuthenticatedRoute exact={true} path="/home" component={HomePage} />
+        <AuthenticatedRouteNonDriver exact={true} path="/manage-users" component={ManageUsersPage} />
         <Route path="" component={ErrorPage} />
       </Switch>
     </div>

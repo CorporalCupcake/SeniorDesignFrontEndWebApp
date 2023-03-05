@@ -4,31 +4,34 @@
 
 import React from "react";
 import Spinner from 'react-bootstrap/Spinner';
+import Button from 'react-bootstrap/Button';
 
 import { connect } from 'react-redux';
 import { selectUser } from "../redux/auth/auth.selector";
 import { createStructuredSelector } from 'reselect';
-
 import { withRouter } from 'react-router-dom';
 
-import AddUser from '../components/addUser.component'
 
-const HomePage = ({user}) => (
-    <div>
-        <Spinner animation="grow" />
-        Welcome to Homepage Mr. {user.FULL_NAME.S}
-        <AddUser/>
+class HomePage extends React.Component {
 
-    </div>
-)
+    render() {
+        return (
+            <div>
+                <Spinner animation="grow" />
+                Welcome to Homepage Mr. {this.props.user.FULL_NAME.S}
 
-// class HomePage extends React.Component {
+                <div className="d-flex mx-4" style={{ padding: '2rem 2rem' }}>
+                    <Button variant="outline-success" onClick={() => this.props.history.push('/manage-users')}>Manage Users</Button>
+                </div>
 
-// }
+            </div>
+        )
+    }
+}
 
 
 const mapStateToProps = createStructuredSelector({
     user: selectUser
 });
 
-export default withRouter( connect(mapStateToProps)(HomePage) );
+export default withRouter(connect(mapStateToProps)(HomePage));

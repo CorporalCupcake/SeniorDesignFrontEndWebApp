@@ -71,3 +71,40 @@ export const getUserByEmailAndPassword = async ({ email, password }) => {
     const data = await ddbClient.send(new QueryCommand(params));
     return data;
 }
+
+export const getAllUsersBasedOnBand = async ({ band }) => {
+    // const params = {
+    //     KeyConditionExpression: 'EMAIL = :email', // This is finding by the partition key
+    //     FilterExpression: "PASSWORD = :password", // This is an additional filter expression
+    //     ExpressionAttributeValues: {
+    //         ':email': { S: email },
+    //         ':password': { S: password }
+    //     },
+    //     // ProjectionExpression: "EMAIL, PASSWORD, BAND, FULL_NAME", // OPTIONAL | Fields to return
+    //     TableName: "users",
+    // };
+
+    const params = {
+        ExpressionAttributeValues: {
+            ":band": {
+                S: band
+            }
+        },
+        KeyConditionExpression: "BAND = :band",
+        TableName: "users"
+    };
+
+
+    /*
+    -- Returned Fields --
+    $metadata: {httpStatusCode: 200, requestId: "ROIJ918DSHCM4F6C9JHS2JRH3BVV4KQNSO5AEMVJF66Q9ASUAAJG", extendedRequestId: undefined, cfId: undefined, attempts: 1, …}
+    ConsumedCapacity: undefined
+    Count: 1
+    Items: [Object] (1)
+    LastEvaluatedKey: undefined
+    ScannedCount: 1
+    */
+
+    const data = await ddbClient.send(new QueryCommand(params));
+    console.log(data);
+}

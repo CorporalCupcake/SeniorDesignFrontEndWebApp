@@ -1,11 +1,3 @@
-/*
-TO DO
-* Check all fields are not empty
-* Check if user already exists via email
-*/
-
-// This component allows the admins and managers to create new users
-
 import React from "react";
 
 import { putItemInTable } from "../aws_services/dynamo_db";
@@ -195,3 +187,11 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export default withRouter(connect(mapStateToProps)(AddUser));
+
+/*
+TO DO
+* Check all fields are not empty
+* Check if user already exists via email
+*/
+
+// This component allows the admins and managers to create new users
