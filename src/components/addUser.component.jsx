@@ -1,6 +1,7 @@
 import React from "react";
 
 import { putItemInTable } from "../aws_services/dynamo_db";
+import { updateUserResponsibilityList } from "../aws_services/dynamo_db";
 
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -12,6 +13,7 @@ import { MD5 } from "crypto-js";
 import Alert from "react-bootstrap/Alert";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+
 
 class AddUser extends React.Component {
     constructor(props) {
@@ -33,12 +35,14 @@ class AddUser extends React.Component {
         };
     }
 
-    handleChange =  (fieldName, event) => {
+
+    handleChange = (fieldName, event) => {
         event.preventDefault();
         this.setState({
             [fieldName]: event.target.value,
         });
     };
+
 
     handleSubmit = async () => {
         const { email, password, full_name, company, band, id_number } = this.state;
@@ -49,6 +53,7 @@ class AddUser extends React.Component {
             isSuccess: false,
             successMessage: null
         });
+
 
         const data = await putItemInTable({
             TableName: "users",
@@ -63,12 +68,19 @@ class AddUser extends React.Component {
             },
         });
 
-        if (data.$metadata.httpStatusCode === 200) {
-            // Success
+
+        if (data.$metadata.httpStatusCode === 200) { // Success
             this.setState({
                 isSuccess: true,
                 successMessage: `User ${this.state.full_name} created successfully.`,
             });
+
+            updateUserResponsibilityList({
+                currentUser: this.props.user,
+                newUserEmail: this.state.email
+            })
+
+
         } else {
             this.setState({
                 isError: true,
@@ -76,6 +88,7 @@ class AddUser extends React.Component {
             });
         }
     };
+
 
     render() {
         return (

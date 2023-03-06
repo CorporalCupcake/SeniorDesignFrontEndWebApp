@@ -1,11 +1,9 @@
-// The user object will have the EMAIL, FULL_NAME, BAND fields
-
 const INITIAL_STATE = {
     user: null
 };
 
 const authReducer = (store = INITIAL_STATE, action) => {
-    switch(action.type){
+    switch (action.type) {
         case 'SET_USER':
             return {
                 ...store,

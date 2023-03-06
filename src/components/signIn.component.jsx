@@ -32,27 +32,24 @@ class SignIn extends React.Component {
     }
 
     handleSubmit = async () => {
-        const { email, password} = this.state;
+        const { email, password } = this.state;
         this.setState({
             isError: false,
             errorMessage: null
         })
 
-        const data = await getUserByEmailAndPassword({email, password: MD5(password).toString()})
+        const data = await getUserByEmailAndPassword({ email, password: MD5(password).toString() })
 
-        /*
-        -- Returned Fields --
-        $metadata: {httpStatusCode: 200, requestId: "U0BFD6IMK24AD5SHFHCPQO593JVV4KQNSO5AEMVJF66Q9ASUAAJG", extendedRequestId: undefined, cfId: undefined, attempts: 1, …}
-        ConsumedCapacity: undefined
-        Count: 1
-        Items: Array (1)
-            {PASSWORD: {S: "450853c01ee1fe1db4dec358f1b6e9ff"}, BAND: {S: "superuser"}, EMAIL: {S: "b00085065@aus.edu"}, FULL_NAME: {S: "ameen ayub"}}
-        LastEvaluatedKey: undefined
-        ScannedCount: 1
-        */
+        // BAND: {S: "SUPERUSER"}
+        // COMPANY: {S: ""}
+        // EMAIL: {S: "b00085065@aus.edu"}
+        // FULL_NAME: {S: "ameen ayub"}
+        // ID_NUMBER: {S: "1111111111"}
+        // PASSWORD: {S: "450853c01ee1fe1db4dec358f1b6e9ff"}
+        // RESPONSIBILITY_LIST: {L: [{S: "b00085065@aus.edu"}, {S: "b00085065@aus.edu"}]}
 
-        if(data.$metadata.httpStatusCode === 200){ // Successful Connection
-            if(data.Count === 1){ // User found in database
+        if (data.$metadata.httpStatusCode === 200) { // Successful Connection
+            if (data.Count === 1) { // User found in database
                 this.props.setUserInStore(data.Items[0])
                 this.props.history.push('/home')
             } else { // User does not exist in database
@@ -69,27 +66,29 @@ class SignIn extends React.Component {
         }
     }
 
-    render() {return (
-        <Form className='m-4' style={{width : '50%'}}>
+    render() {
+        return (
+            <Form className='m-4' style={{ width: '50%' }}>
 
-            {/* Display an error banner if there is an error*/}
-            {this.state.isError ? <Alert key='danger' variant='danger'>{this.state.errorMessage}</Alert> : null}
+                {/* Display an error banner if there is an error*/}
+                {this.state.isError ? <Alert key='danger' variant='danger'>{this.state.errorMessage}</Alert> : null}
 
-            <Form.Group className="mb-3" controlId="formBasicEmail" onChange={event => this.handleChange('email', event)}>
-                <Form.Label>Email address</Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
-            </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail" onChange={event => this.handleChange('email', event)}>
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control type="email" placeholder="Enter email" />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicPassword" onChange={event => this.handleChange('password', event)}>
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-            
-            <Button variant="outline-primary" onClick={this.handleSubmit} size='lg'>
-                Sign In
-            </Button>
-        </Form>
-    )}
+                <Form.Group className="mb-3" controlId="formBasicPassword" onChange={event => this.handleChange('password', event)}>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+
+                <Button variant="outline-primary" onClick={this.handleSubmit} size='lg'>
+                    Sign In
+                </Button>
+            </Form>
+        )
+    }
 }
 
 

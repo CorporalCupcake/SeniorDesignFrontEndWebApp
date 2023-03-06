@@ -12,22 +12,17 @@ import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 
 
-class HomePage extends React.Component {
+const HomePage = ({ user, history }) => (
+    <div>
+        <Spinner animation="grow" />
+        Welcome to Homepage Mr. {user.FULL_NAME.S}
 
-    render() {
-        return (
-            <div>
-                <Spinner animation="grow" />
-                Welcome to Homepage Mr. {this.props.user.FULL_NAME.S}
+        <div className="d-flex mx-4" style={{ padding: '2rem 2rem' }}>
+            <Button variant="outline-success" onClick={() => history.push('/manage-users')}>Manage Users</Button>
+        </div>
 
-                <div className="d-flex mx-4" style={{ padding: '2rem 2rem' }}>
-                    <Button variant="outline-success" onClick={() => this.props.history.push('/manage-users')}>Manage Users</Button>
-                </div>
-
-            </div>
-        )
-    }
-}
+    </div>
+)
 
 
 const mapStateToProps = createStructuredSelector({

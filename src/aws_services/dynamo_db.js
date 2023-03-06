@@ -1,5 +1,5 @@
-import { DynamoDBClient, PutItemCommand, GetItemCommand, QueryCommand } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
+import { DynamoDBClient, PutItemCommand, QueryCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb"
 
 // ----------------------- DYNAMO DB CONFIGURATION FILES -----------------------
 
@@ -73,24 +73,14 @@ export const getUserByEmailAndPassword = async ({ email, password }) => {
 }
 
 export const getAllUsersBasedOnBand = async ({ band }) => {
-    // const params = {
-    //     KeyConditionExpression: 'EMAIL = :email', // This is finding by the partition key
-    //     FilterExpression: "PASSWORD = :password", // This is an additional filter expression
-    //     ExpressionAttributeValues: {
-    //         ':email': { S: email },
-    //         ':password': { S: password }
-    //     },
-    //     // ProjectionExpression: "EMAIL, PASSWORD, BAND, FULL_NAME", // OPTIONAL | Fields to return
-    //     TableName: "users",
-    // };
 
     const params = {
+        KeyConditionExpression: "EMAIL = :email",
+        FilterExpression: "BAND = :band",
         ExpressionAttributeValues: {
-            ":band": {
-                S: band
-            }
+            ":band": { S: band },
+            ':email': { S: '*' }
         },
-        KeyConditionExpression: "BAND = :band",
         TableName: "users"
     };
 
@@ -107,4 +97,26 @@ export const getAllUsersBasedOnBand = async ({ band }) => {
 
     const data = await ddbClient.send(new QueryCommand(params));
     console.log(data);
+}
+
+
+export const updateUserResponsibilityList = async ({ currentUser, newUserEmail }) => {
+
+    const params = {
+        TableName: "users",
+        Key: {
+            EMAIL: currentUser.EMAIL.S
+        },
+        UpdateExpression: 'set RESPONSIBILITY_LIST = list_append(RESPONSIBILITY_LIST, :rl)',
+        ExpressionAttributeValues: {
+            ':rl': [newUserEmail]
+        }
+    }
+
+    try {
+        return await ddbDocClient.send(new UpdateCommand(params));
+    } catch (err) {
+        console.log("Error", err);
+    }
+
 }
