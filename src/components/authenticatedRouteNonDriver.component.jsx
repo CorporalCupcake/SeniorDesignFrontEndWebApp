@@ -8,7 +8,7 @@ import { selectUser } from '../redux/auth/auth.selector';
 const AuthenticatedRouteNonDriver = ({ user, exact, path, component }) => (
     <div>
         {
-            user !== null && user.BAND.S !== 'DRIVER' // User is signed in and isn't a driver
+            user.BAND.S !== 'DRIVER' && user !== null // User is signed in and isn't a driver
             ? <Route exact={exact} path={path} component={component}/>
             : <Redirect exact to='/home'/>
         }
@@ -20,3 +20,4 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export default connect(mapStateToProps)(AuthenticatedRouteNonDriver);
+

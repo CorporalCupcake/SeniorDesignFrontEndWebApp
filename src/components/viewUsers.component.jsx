@@ -3,7 +3,7 @@ import { getAllUsersBasedOnBand } from "../aws_services/dynamo_db";
 
 const ViewUsers = () => (
     <div>
-        Hi
+        Hi Hello
         {()=>getAllUsersBasedOnBand({band:"DRIVER"})}
     </div>
 )
