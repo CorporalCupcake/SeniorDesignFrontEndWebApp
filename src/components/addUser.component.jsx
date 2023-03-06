@@ -1,3 +1,26 @@
+/**
+ * @description
+ * This component will allow a logged in user to add a new user to the database. The component has different behaviours
+ * for differet user bands.
+ * - SUPERUSER: The superuser can create admins that can belong to any company.
+ * - ADMIN: The admin can create managers that belong to the same company.
+ * - MANAGER: The manager can create drivers that belong to the same company.
+ * - DRIVER: Drivers are not permitted access to this component from the ManageUsers Page.
+ * 
+ * After a user creates another user, the component also add the newly created user to the signed-in
+ * user's responsibility list.
+ * 
+ * @author Ameen Ayub
+ * 
+ */
+
+/*
+TO DO
+* Check all fields are not empty
+* Check if user already exists via email
+*/
+
+
 import React from "react";
 
 import { putItemInTable } from "../aws_services/dynamo_db";
@@ -200,11 +223,3 @@ const mapStateToProps = createStructuredSelector({
 });
 
 export default withRouter(connect(mapStateToProps)(AddUser));
-
-/*
-TO DO
-* Check all fields are not empty
-* Check if user already exists via email
-*/
-
-// This component allows the admins and managers to create new users
