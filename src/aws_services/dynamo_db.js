@@ -1,4 +1,4 @@
-import { DynamoDBClient, PutItemCommand, QueryCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, PutItemCommand, QueryCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb"
 
 // ----------------------- DYNAMO DB CONFIGURATION FILES -----------------------
@@ -72,16 +72,14 @@ export const getUserByEmailAndPassword = async ({ email, password }) => {
     return data;
 }
 
-export const getAllUsersBasedOnBand = async ({ band }) => {
-
+export const getUserByEmail = async ({ email }) => {
     const params = {
-        KeyConditionExpression: "EMAIL = :email",
-        FilterExpression: "BAND = :band",
+        KeyConditionExpression: 'EMAIL = :email', // This is finding by the partition key
         ExpressionAttributeValues: {
-            ":band": { S: band },
-            ':email': { S: '*' }
+            ':email': { S: email }
         },
-        TableName: "users"
+        // ProjectionExpression: "EMAIL, PASSWORD, BAND, FULL_NAME", // OPTIONAL | Fields to return
+        TableName: "users",
     };
 
 
@@ -96,8 +94,30 @@ export const getAllUsersBasedOnBand = async ({ band }) => {
     */
 
     const data = await ddbClient.send(new QueryCommand(params));
-    console.log(data);
+    return data;
 }
+
+// export const getAllUsersFromResponsibilityList = async ({ currentUser }) => {
+
+//     const responsibility_list = []
+//     currentUser.RESPONSIBILITY_LIST.L.forEach(obj => responsibility_list.push(obj.S))
+
+//     forEach(email in responsibility_list){
+
+//     }
+
+//     // try {
+//     //     console.log( await ddbClient.send(new ScanCommand(params)))
+//     // } catch (err) {
+//     //     console.log("Error", err);
+//     // }
+
+//     /*
+//     -- Returned Fields --
+    
+//     */
+
+// }
 
 
 export const updateUserResponsibilityList = async ({ currentUser, newUserEmail }) => {
@@ -120,3 +140,57 @@ export const updateUserResponsibilityList = async ({ currentUser, newUserEmail }
     }
 
 }
+
+export async function getItemsByPageNumber(pageNumber, lastEvaluatedKey) {
+
+    const PAGE_SIZE = 2;
+
+    let params = {
+        TableName: "users",
+        Limit: PAGE_SIZE,
+    }
+
+    if (pageNumber > 1 && lastEvaluatedKey) {
+        // If there is a LastEvaluatedKey and we're not on the first page,
+        // use it to continue pagination until we get to the requested page
+        params.ExclusiveStartKey = lastEvaluatedKey;
+        const command = new ScanCommand(params);
+        const { LastEvaluatedKey } = await ddbClient.send(command);
+        return getItemsByPageNumber(pageNumber - 1, LastEvaluatedKey);
+    } else if (pageNumber === 1 && lastEvaluatedKey) {
+        // If we're on the first page and there is a LastEvaluatedKey,
+        // discard it since we're starting fresh on page 1
+        delete params.ExclusiveStartKey;
+    }
+
+    // Call the Scan command to retrieve items for the requested page
+    const itemsToSkip = (pageNumber - 1) * PAGE_SIZE;
+    params.Limit = PAGE_SIZE + itemsToSkip;
+    const command = new ScanCommand(params);
+    const { Items, LastEvaluatedKey } = await ddbClient.send(command);
+
+    // Do something with the retrieved items (e.g. log them)
+    console.log(Items.slice(itemsToSkip, itemsToSkip + PAGE_SIZE));
+
+    if (LastEvaluatedKey && pageNumber < getTotalPages(LastEvaluatedKey)) {
+        // If there is a LastEvaluatedKey and we haven't reached the last page,
+        // recursively call the function to retrieve more items for the next page
+        return getItemsByPageNumber(pageNumber + 1, LastEvaluatedKey);
+    }
+}
+
+// Helper function to calculate the total number of pages based on the last evaluated key
+const getTotalPages = async (lastEvaluatedKey) => {
+    const PAGE_SIZE = 2;
+    let params = {
+        TableName: "users",
+        Limit: PAGE_SIZE,
+    }
+    const command = new ScanCommand(params);
+    const { Count } = await ddbClient.send(command);
+    return Math.ceil(Count / PAGE_SIZE);
+}
+
+// Call the function to retrieve items for a specific page number
+const pageNumber = 3; // Change this to the desired page number
+getItemsByPageNumber(pageNumber);

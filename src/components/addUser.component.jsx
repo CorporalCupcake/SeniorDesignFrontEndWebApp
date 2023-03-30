@@ -14,6 +14,7 @@
  * 
  */
 
+
 /*
 TO DO
 * Check all fields are not empty
@@ -165,11 +166,6 @@ class AddUser extends React.Component {
                     </Form.Group>
 
                     {/* -------------------------- BAND --------------------------*/}
-                    {/* Select the band of the new user
-                    - Admins can create new Admins, managers and driver
-                    - Managers can create new drivers
-                    - Drivers cannot do anything.
-                */}
                     <div style={{ marginBottom: "0.4rem" }}>User Band</div>
                     <Form.Select
                         aria-label="Select band of new user"
