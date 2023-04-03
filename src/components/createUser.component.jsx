@@ -39,7 +39,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
 
-class AddUser extends React.Component {
+class CreateUser extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -182,9 +182,11 @@ class AddUser extends React.Component {
                             <option value="MANAGER">MANAGER</option>
                         ) : null}
 
-                        {this.props.user.BAND.S === "SUPERUSER" ? (
+                        {this.props.user.BAND.S === "SUPERUSER" ? (<>
                             <option value="ADMIN">ADMIN</option>
-                        ) : null}
+                            {/* <option value="MANAGER">MANAGER</option>
+                            <option value="DRIVER">DRIVER</option> */}
+                        </>) : null}
                     </Form.Select>
 
                     {/* -------------------------- COMPANY --------------------------*/}
@@ -218,4 +220,4 @@ const mapStateToProps = createStructuredSelector({
     user: selectUser
 });
 
-export default withRouter(connect(mapStateToProps)(AddUser));
+export default withRouter(connect(mapStateToProps)(CreateUser));

@@ -6,28 +6,30 @@ import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
 import Header from "./components/header.component";
-import ManageUsersPage from "./pages/ManageUsersPage";
+import SandboxPage from "./pages/SandboxPage";
+import CreateUser from "./components/createUser.component";
 
 import AuthenticatedRoute from "./components/authenticatedRoute.component";
-import AuthenticatedRouteNonDriver from "./components/authenticatedRoute.component";
 
 // import { AiOutlineUser } from 'react-icons/ai';
 // import { IconContext } from "react-icons";
+
+/* <IconContext.Provider value={{ color: 'blue', size: '50px' }}>
+<AiOutlineUser/>
+</IconContext.Provider> 
+*/
 
 
 function App() {
   return (
     <div>
-      {/* <IconContext.Provider value={{ color: 'blue', size: '50px' }}>
-        <AiOutlineUser/>
-      </IconContext.Provider> */}
-
       <Header />
       <Switch>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/login" component={LoginPage} />
         <AuthenticatedRoute exact={true} path="/home" component={HomePage} />
-        <AuthenticatedRouteNonDriver exact={true} path="/manage-users" component={ManageUsersPage} />
+        <AuthenticatedRoute exact={true} path="/sandbox" component={SandboxPage} />
+        <AuthenticatedRoute exact={true} path="/create-user" component={CreateUser} />
         <Route path="" component={ErrorPage} />
       </Switch>
     </div>

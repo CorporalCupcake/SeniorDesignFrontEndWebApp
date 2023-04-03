@@ -10,9 +10,9 @@ import { connect } from "react-redux";
 
 import { signOutAction } from "../redux/auth/auth.actions";
 
-import { projectName } from "../centralStorage";
+import { withRouter } from "react-router-dom";
 
-const Header = ({ user }) => {
+const Header = ({ user, history }) => {
     return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
@@ -25,22 +25,22 @@ const Header = ({ user }) => {
                         height="30"
                         className="d-inline-block align-top"
                     />{" "}
-                    { projectName.cus }
+                    {"Fatamat Bike"}
                 </Navbar.Brand >
 
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="#features">Features</Nav.Link>
-                        <Nav.Link href="#pricing">Pricing</Nav.Link>
+                        <Nav.Link onClick={() => history.push('/create-user')}>Create User</Nav.Link>
+                        <Nav.Link onClick={() => history.push('/sandbox')}>Sandbox</Nav.Link>
                     </Nav>
 
                     <Nav>
-                        { 
-                            user === null 
-                            ? <Nav.Link href="/login">Sign In</Nav.Link>  // User is currently not signed in
-                            : <Nav.Link onClick={signOutAction} href='/'>Log Out</Nav.Link>  // User is currently signed in
-                        }          
+                        {
+                            user === null
+                                ? <Nav.Link href="/login">Sign In</Nav.Link>  // User is currently not signed in
+                                : <Nav.Link onClick={signOutAction} href='/'>Log Out</Nav.Link>  // User is currently signed in
+                        }
                     </Nav>
 
                 </Navbar.Collapse>
@@ -51,7 +51,7 @@ const Header = ({ user }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-    user: selectUser,
+    user: selectUser
 });
 
-export default connect(mapStateToProps)(Header);
+export default withRouter(connect(mapStateToProps)(Header));

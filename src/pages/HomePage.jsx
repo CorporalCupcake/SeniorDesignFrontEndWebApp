@@ -11,6 +11,8 @@ import { selectUser } from "../redux/auth/auth.selector";
 import { createStructuredSelector } from 'reselect';
 import { withRouter } from 'react-router-dom';
 
+import { getItemsByPageNumber } from "../aws_services/dynamo_db";
+
 
 const HomePage = ({ user, history }) => (
     <div>
@@ -18,7 +20,8 @@ const HomePage = ({ user, history }) => (
         Welcome to Homepage Mr. {user.FULL_NAME.S}
 
         <div className="d-flex mx-4" style={{ padding: '2rem 2rem' }}>
-            <Button variant="outline-success" onClick={() => history.push('/manage-users')}>Manage Users</Button>
+            {/* <Button variant="outline-success" onClick={() => history.push('/manage-users')}>Manage Users</Button> */}
+            <Button variant="outline-success" onClick={()=>console.log(getItemsByPageNumber(2))}> HA </Button>
         </div>
 
     </div>
