@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { selectUser } from "../redux/auth/auth.selector";
 
 import { getItemsByPageNumber } from "../aws_services/dynamo_db";
+import PaginatedTable from "./paginatedTable/paginatedTable.component";
 
 class ViewResponsibilityListPaginatedTable extends React.Component {
 
@@ -13,19 +14,25 @@ class ViewResponsibilityListPaginatedTable extends React.Component {
         super(props);
         this.state = {
             page_number: 1,
+            users: {},
+            tableFields: ["Name", "Band", "Email", "ID Number", "Company", "Responsibility List"]
         }
     }
 
-
-
-    // componentDidMount() {
-
-    // }
+    componentWillMount = async () => {
+        this.setState({
+            users: await getItemsByPageNumber(this.props.user, 1, 2)
+        })
+    }
 
     render() {
-        return (
-            <Button variant="outline-success" onClick={()=>console.log(getItemsByPageNumber(this.props.user.RESPONSIBILITY_LIST.L))}> RESP LIST </Button>
-        )
+        return (<>
+            {console.log(this.state.users)}
+            <PaginatedTable
+                tableFields={this.state.tableFields}
+                users={this.state.users}
+            />
+        </>)
     }
 
 

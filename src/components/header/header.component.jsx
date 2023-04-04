@@ -1,14 +1,16 @@
 import React from "react";
+import "./header.styles.css";
 
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 import { createStructuredSelector } from "reselect";
-import { selectUser } from "../redux/auth/auth.selector";
+
+import { selectUser } from "../../redux/auth/auth.selector";
 import { connect } from "react-redux";
 
-import { signOutAction } from "../redux/auth/auth.actions";
+import { signOutAction } from "../../redux/auth/auth.actions";
 
 import { withRouter } from "react-router-dom";
 
@@ -20,10 +22,10 @@ const Header = ({ user, history }) => {
                 < Navbar.Brand href="/" >
                     <img
                         alt="logo"
-                        src={require("../resources/images/logo.png")}
+                        src={require("../../resources/images/logo.png")}
                         width="30"
                         height="30"
-                        className="d-inline-block align-top"
+                        className="d-inline-block align-top logo"
                     />{" "}
                     {"Fatamat Bike"}
                 </Navbar.Brand >

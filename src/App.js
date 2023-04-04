@@ -5,7 +5,7 @@ import { Route, Switch } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
-import Header from "./components/header.component";
+import Header from "./components/header/header.component";
 import SandboxPage from "./pages/SandboxPage";
 import CreateUser from "./components/createUser.component";
 

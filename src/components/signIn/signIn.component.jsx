@@ -1,4 +1,5 @@
 import React from "react";
+import "./signIn.styles.css";
 
 import { MD5 } from 'crypto-js';
 import { connect } from 'react-redux';
@@ -9,8 +10,8 @@ import Alert from 'react-bootstrap/Alert';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-import { getUserByEmailAndPassword } from "../aws_services/dynamo_db";
-import { signInAction } from "../redux/auth/auth.actions";
+import { getUserByEmailAndPassword } from "../../aws_services/dynamo_db";
+import { signInAction } from "../../redux/auth/auth.actions";
 
 
 class SignIn extends React.Component {
@@ -40,14 +41,6 @@ class SignIn extends React.Component {
 
         const data = await getUserByEmailAndPassword({ email, password: MD5(password).toString() })
 
-        // BAND: {S: "SUPERUSER"}
-        // COMPANY: {S: ""}
-        // EMAIL: {S: "b00085065@aus.edu"}
-        // FULL_NAME: {S: "ameen ayub"}
-        // ID_NUMBER: {S: "1111111111"}
-        // PASSWORD: {S: "450853c01ee1fe1db4dec358f1b6e9ff"}
-        // RESPONSIBILITY_LIST: {L: [{S: "b00085065@aus.edu"}, {S: "b00085065@aus.edu"}]}
-
         if (data.$metadata.httpStatusCode === 200) { // Successful Connection
             if (data.Count === 1) { // User found in database
                 this.props.setUserInStore(data.Items[0])
@@ -68,7 +61,7 @@ class SignIn extends React.Component {
 
     render() {
         return (
-            <Form className='m-4' style={{ width: '50%' }}>
+            <Form className='form'>
 
                 {/* Display an error banner if there is an error*/}
                 {this.state.isError ? <Alert key='danger' variant='danger'>{this.state.errorMessage}</Alert> : null}
@@ -83,7 +76,7 @@ class SignIn extends React.Component {
                     <Form.Control type="password" placeholder="Password" />
                 </Form.Group>
 
-                <Button variant="outline-primary" onClick={this.handleSubmit} size='lg'>
+                <Button className="button" variant="outline-primary" onClick={this.handleSubmit}>
                     Sign In
                 </Button>
             </Form>

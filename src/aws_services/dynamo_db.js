@@ -118,60 +118,26 @@ export const updateUserResponsibilityList = async ({ currentUser, newUserEmail }
 
 }
 
-export const getItemsByPageNumber = async (emailList) => {
+export const getItemsByPageNumber = async (user, pageNumber, pageSize) => {
 
-    // const PAGE_SIZE = 2;
+    const emailList = user.RESPONSIBILITY_LIST.L;
 
-
-    // let params = {
-    //     TableName: "users",
-    //     Limit: PAGE_SIZE,
-    //     RequestItems: {
-    //         "users": {
-    //             Keys: user.RESPONSIBILITY_LIST.L.map(email => ({ EMAIL: { S: email } })),
-    //         }
-    //     }
-    // }
-
-    // const { Count } = await ddbClient.send(new ScanCommand(params));
-    // const totalPages = Math.ceil(Count / PAGE_SIZE);
-
-    // if (pageNumber > 1 && lastEvaluatedKey) {
-    //     // If there is a LastEvaluatedKey and we're not on the first page, use it to continue pagination until we get to the requested page
-    //     params.ExclusiveStartKey = lastEvaluatedKey;
-    //     const { LastEvaluatedKey } = await ddbClient.send(new ScanCommand(params));
-    //     return getItemsByPageNumber(user, pageNumber - 1, LastEvaluatedKey);
-    // } else if (pageNumber === 1 && lastEvaluatedKey) {
-    //     // If we're on the first page and there is a LastEvaluatedKey, discard it since we're starting fresh on page 1
-    //     delete params.ExclusiveStartKey;
-    // }
-
-    // const itemsToSkip = (pageNumber - 1) * PAGE_SIZE;
-    // params.Limit = PAGE_SIZE + itemsToSkip;
-    // const command = new ScanCommand(params);
-    // const { Items, LastEvaluatedKey } = await ddbClient.send(command);
-
-    // // Do something with the retrieved items (e.g. log them)
-    // console.log(Items.slice(itemsToSkip, itemsToSkip + PAGE_SIZE));
-
-    // if (LastEvaluatedKey && pageNumber < totalPages) {
-    //     // If there is a LastEvaluatedKey and we haven't reached the last page, recursively call the function to retrieve more items for the next page
-    //     return getItemsByPageNumber(user, pageNumber + 1, LastEvaluatedKey);
-    // }
-
+    const itemsToSkip = (pageNumber - 1) * pageSize;
+    const itemsToGet = emailList.slice(itemsToSkip, itemsToSkip + pageSize);
     const params = {
         RequestItems: {
             "users": {
-                Keys: emailList.map((email) => ({ "EMAIL": email })),
+                Keys: itemsToGet.map((email) => ({ "EMAIL": email })),
             }
         }
     };
 
     const { Responses } = await ddbClient.send(new BatchGetItemCommand(params));
     const items = Responses["users"];
+    
+    // Format of items
+    // page_number: 1
+    // users: Promise {status: "resolved", result: Array}
 
-    // Do something with the retrieved items (e.g. log them)
-    console.log(items);
-
-    return items;
+    return Responses.users;
 }

@@ -3,8 +3,7 @@ import React from "react";
 import ViewResponsibilityListPaginatedTable from "../components/viewResponsibilityListPaginatedTable.component";
 
 const SandboxPage = () => (
-
-        <ViewResponsibilityListPaginatedTable/>
+    <ViewResponsibilityListPaginatedTable/>
 )
 
 export default SandboxPage;

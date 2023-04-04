@@ -1,0 +1,89 @@
+/* header.css */
+
+/* Nav link hover effect */
+.nav-link:hover {
+    color: #f8b500;
+}
+
+/* Brand link hover effect */
+.navbar-brand:hover {
+    transform: scale(1.1);
+}
+
+/* Nav toggle button hover effect */
+.navbar-toggler-icon:hover {
+    transform: rotate(90deg);
+}
+
+/* Active page indicator */
+.navbar-nav .active>.nav-link {
+    background-color: #f8b500;
+    color: #fff;
+}
+
+/* Nav link active effect */
+.nav-link.active {
+    color: #fff !important;
+}
+
+/* Sign out button hover effect */
+.navbar-nav .nav-link:last-child:hover {
+    color: #f8b500;
+}
+
+/* Sign out button active effect */
+.navbar-nav .nav-link:last-child.active {
+    background-color: #f8b500;
+    color: #fff;
+}
+
+/* Logo animation */
+.navbar-brand img {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Create user button animation */
+.navbar-nav .nav-link:first-child {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Sandbox button animation */
+.navbar-nav .nav-link:nth-child(2) {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Sign out button animation */
+.navbar-nav .nav-link:last-child {
+    transition: color 0.3s ease-in-out;
+}
+
+/* Responsive breakpoint */
+@media (max-width: 768px) {
+
+    /* Navbar background color */
+    .navbar {
+        background-color: #fff;
+    }
+
+    /* Nav link active effect */
+    .navbar-nav .active>.nav-link {
+        background-color: #f8b500;
+        color: #fff;
+    }
+
+    /* Sign out button active effect */
+    .navbar-nav .nav-link:last-child.active {
+        background-color: #f8b500;
+        color: #fff;
+    }
+}
+
+.logo {
+    animation: spin 6s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}

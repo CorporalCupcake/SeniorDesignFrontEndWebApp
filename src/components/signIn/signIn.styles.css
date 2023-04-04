@@ -1,0 +1,51 @@
+.form {
+    width: 50%;
+    margin: 2rem;
+}
+
+.form-control {
+    border-radius: 20px;
+    border: 2px solid #ccc;
+    padding: 10px;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #6d1b7b;
+    box-shadow: 0 0 10px #6d1b7b;
+}
+
+.form-label {
+    position: absolute;
+    pointer-events: none;
+    left: 20px;
+    top: 20px;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus+.form-label,
+.form-control:not(:placeholder-shown)+.form-label {
+    font-size: 12px;
+    top: 5px;
+    color: #6d1b7b;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.alert {
+    border-radius: 20px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+button {
+    transition: transform 0.3s ease-in-out;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
