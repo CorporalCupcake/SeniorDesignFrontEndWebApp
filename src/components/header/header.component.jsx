@@ -40,7 +40,7 @@ const Header = ({ user, history }) => {
                     <Nav>
                         {
                             user === null
-                                ? <Nav.Link href="/login">Sign In</Nav.Link>  // User is currently not signed in
+                                ? <Nav.Link onClick={() => history.push('/login')}>Sign In</Nav.Link>  // User is currently not signed in
                                 : <Nav.Link onClick={signOutAction} href='/'>Log Out</Nav.Link>  // User is currently signed in
                         }
                     </Nav>
