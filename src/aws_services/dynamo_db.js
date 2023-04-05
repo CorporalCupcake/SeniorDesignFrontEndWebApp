@@ -133,7 +133,7 @@ export const getItemsByPageNumber = async (user, pageNumber, pageSize) => {
     };
 
     const { Responses } = await ddbClient.send(new BatchGetItemCommand(params));
-    const items = Responses["users"];
+    // const items = Responses["users"];
     
     // Format of items
     // page_number: 1
