@@ -134,10 +134,24 @@ export const getItemsByPageNumber = async (user, pageNumber, pageSize) => {
 
     const { Responses } = await ddbClient.send(new BatchGetItemCommand(params));
     // const items = Responses["users"];
-    
+
     // Format of items
     // page_number: 1
     // users: Promise {status: "resolved", result: Array}
 
     return Responses.users;
 }
+
+export const getTripDetailsByTripID = async (tripID) => {
+    const params = {
+        KeyConditionExpression: 'TripID = :tid', // This is finding by the partition key
+        ExpressionAttributeValues: {
+            ':tid': { S: tripID }
+        },
+        TableName: "Trips",
+    };
+
+    const data = await ddbClient.send(new QueryCommand(params));
+    console.log(data.Items[0]);
+    return data.Items[0];
+} 

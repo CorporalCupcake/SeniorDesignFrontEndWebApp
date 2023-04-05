@@ -1,0 +1,86 @@
+.create-user {
+    margin: 1rem;
+    width: 30%;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.form-group input {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-group input:invalid {
+    border-color: #dc3545;
+}
+
+.form-group input:hover:not(:disabled),
+.form-group input:focus:not(:disabled) {
+    border-color: #4d4d4d;
+}
+
+.form-group input::-webkit-input-placeholder {
+    color: #6c757d;
+}
+
+.form-group input::-moz-placeholder {
+    color: #6c757d;
+}
+
+.form-group input:-ms-input-placeholder {
+    color: #6c757d;
+}
+
+.form-group input::placeholder {
+    color: #6c757d;
+}
+
+.form-group .form-error {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 0;
+    font-size: 0.875rem;
+    color: #dc3545;
+    opacity: 0;
+    transition: opacity 0.15s ease-in-out;
+}
+
+.form-group input:invalid~.form-error {
+    opacity: 1;
+}
+
+.form-group input:focus~.form-error {
+    opacity: 0;
+}
+
+.form-group input:hover:not(:disabled)~.form-error {
+    opacity: 1;
+}
+
+.form-group input:focus:not(:disabled)~.form-error {
+    opacity: 0;
+}

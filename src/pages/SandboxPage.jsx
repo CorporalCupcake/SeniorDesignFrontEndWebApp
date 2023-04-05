@@ -1,9 +1,9 @@
 import React from "react";
 
-import ViewResponsibilityListPaginatedTable from "../components/viewResponsibilityListPaginatedTable.component";
+import TripReport from "../components/tripReport/tripReport.component";
 
 const SandboxPage = () => (
-    <ViewResponsibilityListPaginatedTable/>
+    <TripReport tripID="1680127634722-9170919059018911744"/>
 )
 
 export default SandboxPage;

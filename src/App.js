@@ -7,7 +7,7 @@ import HomePage from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
 import Header from "./components/header/header.component";
 import SandboxPage from "./pages/SandboxPage";
-import CreateUser from "./components/createUser.component";
+import CreateUserPage from "./pages/CreateUserPage";
 
 import AuthenticatedRoute from "./components/authenticatedRoute.component";
 
@@ -29,7 +29,7 @@ function App() {
         <Route exact path="/login" component={LoginPage} />
         <AuthenticatedRoute exact={true} path="/home" component={HomePage} />
         <AuthenticatedRoute exact={true} path="/sandbox" component={SandboxPage} />
-        <AuthenticatedRoute exact={true} path="/create-user" component={CreateUser} />
+        <AuthenticatedRoute exact={true} path="/create-user" component={CreateUserPage} />
         <Route path="" component={ErrorPage} />
       </Switch>
     </div>

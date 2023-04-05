@@ -24,12 +24,14 @@ TO DO
 
 import React from "react";
 
-import { putItemInTable } from "../aws_services/dynamo_db";
-import { updateUserResponsibilityList } from "../aws_services/dynamo_db";
+import './createUser.styles.css'
+
+import { putItemInTable } from "../../aws_services/dynamo_db";
+import { updateUserResponsibilityList } from "../../aws_services/dynamo_db";
 
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { selectUser } from "../redux/auth/auth.selector";
+import { selectUser } from "../../redux/auth/auth.selector";
 import { createStructuredSelector } from "reselect";
 
 import { MD5 } from "crypto-js";
@@ -116,7 +118,7 @@ class CreateUser extends React.Component {
 
     render() {
         return (
-            <div className='mx-4' style={{ width: "50rem" }}>
+            <div className='create-user'>
 
                 {/* Display an error banner if there is an error*/}
                 {this.state.isError ? <Alert key='danger' variant='danger'>{this.state.errorMessage}</Alert> : null}
