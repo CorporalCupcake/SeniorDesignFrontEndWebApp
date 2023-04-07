@@ -152,6 +152,5 @@ export const getTripDetailsByTripID = async (tripID) => {
     };
 
     const data = await ddbClient.send(new QueryCommand(params));
-    console.log(data.Items[0]);
     return data.Items[0];
 } 

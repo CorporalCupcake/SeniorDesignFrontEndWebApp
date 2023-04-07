@@ -4,29 +4,35 @@ import { withRouter } from "react-router-dom";
 import { selectUser } from "../../redux/auth/auth.selector";
 import { createStructuredSelector } from "reselect";
 import { getTripDetailsByTripID } from "../../aws_services/dynamo_db";
+import Loading from "../loading/loading.component"
 import "./tripReport.styles.css";
 
 class TripReport extends React.Component {
     state = {
-        tripData: null
+        tripData: null,
+        isLoading: true
     };
 
     async componentDidMount() {
         const { tripID } = this.props;
         const tripData = await getTripDetailsByTripID(tripID);
-        this.setState({ tripData, dataIsFetched: true });
+        this.setState({
+            tripData,
+            isLoading: false
+        });
     }
 
     render() {
-        const {tripData } = this.state;
+        const { tripData } = this.state;
 
         if (!tripData) {
-            return <div>Loading...</div>;
+            return <Loading isLoading={true} />
         }
 
         const { TripID, BikeID, StartTimeStamp, EndTimeStamp, RiskLevel, RiskyInstances } = tripData;
 
         return (
+
             <div className="trip-report">
                 <div className="trip-info">
                     <div className="label">Trip ID:</div>

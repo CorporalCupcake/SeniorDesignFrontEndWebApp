@@ -19,7 +19,7 @@ const Header = ({ user, history }) => {
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Container>
 
-                < Navbar.Brand href="/" >
+                < Navbar.Brand onClick={() => history.push('/')} >
                     <img
                         alt="logo"
                         src={require("../../resources/images/logo.png")}
@@ -40,8 +40,8 @@ const Header = ({ user, history }) => {
                     <Nav>
                         {
                             user === null
-                                ? <Nav.Link onClick={() => history.push('/login')}>Sign In</Nav.Link>  // User is currently not signed in
-                                : <Nav.Link onClick={signOutAction} href='/'>Log Out</Nav.Link>  // User is currently signed in
+                                ? <Nav.Link onClick={() => history.push('/login')} className="login-link">Sign In</Nav.Link>  // User is currently not signed in
+                                : <Nav.Link onClick={signOutAction} href='/' className="logout-link">Log Out</Nav.Link>  // User is currently signed in
                         }
                     </Nav>
 
