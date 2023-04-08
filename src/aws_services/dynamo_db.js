@@ -118,7 +118,7 @@ export const updateUserResponsibilityList = async ({ currentUser, newUserEmail }
 
 }
 
-export const getItemsByPageNumber = async (user, pageNumber, pageSize) => {
+export const getUsersFromResponsibilityPaginated = async (user, pageNumber, pageSize) => {
 
     const emailList = user.RESPONSIBILITY_LIST.L;
 
@@ -153,4 +153,40 @@ export const getTripDetailsByTripID = async (tripID) => {
 
     const data = await ddbClient.send(new QueryCommand(params));
     return data.Items[0];
-} 
+}
+
+
+export const getTripsByDriverEmail = async (driverEmail, pageNumber, pageSize) => {
+    const params = {
+        TableName: "Trips",
+        FilterExpression: "DriverEmail = :driverEmail",
+        ExpressionAttributeValues: { ":driverEmail": { S: driverEmail } },
+    };
+
+    try {
+        const data = await ddbClient.send(new ScanCommand(params));
+
+        const totalItems = data.Count;
+        const itemsPerPage = pageSize;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        const startIndex = (pageNumber - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        const paginatedResults = data.Items.slice(startIndex, endIndex);
+
+        console.log(paginatedResults)
+
+        return {
+            totalItems,
+            totalPages,
+            itemsPerPage,
+            pageNumber,
+            results: paginatedResults,
+        };
+    } catch (err) {
+        throw(err);
+    }
+}
+
+

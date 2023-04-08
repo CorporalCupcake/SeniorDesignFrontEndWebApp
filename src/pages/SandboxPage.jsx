@@ -1,9 +1,12 @@
 import React from "react";
 
-import TripReport from "../components/tripReport/tripReport.component";
+import { Button } from "react-bootstrap";
+import { getTripsByDriverEmail } from "../aws_services/dynamo_db";
+
+import TripViewTable from "../components/tripViewTable/tripViewTable.component";
 
 const SandboxPage = () => (
-    <TripReport tripID="1680127634722-9170919059018911744"/>
+    <TripViewTable driverEmail="td1@talabat.com"/>
 )
 
 export default SandboxPage;
