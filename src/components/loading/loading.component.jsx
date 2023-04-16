@@ -3,7 +3,6 @@
  * with a spinner animation if the `isLoading` prop is truthy. If `isLoading` is falsy,
  * the component returns null.
  *
- * @param {boolean} props.isLoading - A boolean value that determines whether the loading screen
  * should be displayed or not.
  *
  */
@@ -12,8 +11,8 @@
 import React from 'react';
 import './loading.styles.css';
 
-const Loading = ({ isLoading }) => {
-    return isLoading ? (
+const Loading = () => {
+    return (
         <div className="loading-screen">
             <div className="loader">
                 <div className="dot dot1"></div>
@@ -23,7 +22,7 @@ const Loading = ({ isLoading }) => {
                 <div className="dot dot5"></div>
             </div>
         </div>
-    ) : null;
+    );
 };
 
 export default Loading;

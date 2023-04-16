@@ -156,9 +156,10 @@ export const getTripDetailsByTripID = async (tripID) => {
 }
 
 
-export const getTripsByDriverEmail = async (driverEmail, pageNumber, pageSize) => {
+export const getTripReportsByDriverEmail = async (driverEmail, pageNumber, pageSize) => {
+    console.log(driverEmail)
     const params = {
-        TableName: "Trips",
+        TableName: "TripReport",
         FilterExpression: "DriverEmail = :driverEmail",
         ExpressionAttributeValues: { ":driverEmail": { S: driverEmail } },
     };
@@ -175,8 +176,6 @@ export const getTripsByDriverEmail = async (driverEmail, pageNumber, pageSize) =
 
         const paginatedResults = data.Items.slice(startIndex, endIndex);
 
-        console.log(paginatedResults)
-
         return {
             totalItems,
             totalPages,
@@ -190,3 +189,7 @@ export const getTripsByDriverEmail = async (driverEmail, pageNumber, pageSize) =
 }
 
 
+
+
+
+// The PUSH WORKED

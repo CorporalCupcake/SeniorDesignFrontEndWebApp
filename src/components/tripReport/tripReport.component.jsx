@@ -26,7 +26,7 @@ class TripReport extends React.Component {
         const { tripData } = this.state;
 
         if (!tripData) {
-            return <Loading isLoading={true} />
+            return <Loading />
         }
 
         const { TripID, BikeID, StartTimeStamp, EndTimeStamp, RiskLevel, RiskyInstances } = tripData;
