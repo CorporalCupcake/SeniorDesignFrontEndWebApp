@@ -57,17 +57,6 @@ export const getUserByEmailAndPassword = async ({ email, password }) => {
         TableName: "users",
     };
 
-
-    /*
-    -- Returned Fields --
-    $metadata: {httpStatusCode: 200, requestId: "ROIJ918DSHCM4F6C9JHS2JRH3BVV4KQNSO5AEMVJF66Q9ASUAAJG", extendedRequestId: undefined, cfId: undefined, attempts: 1, …}
-    ConsumedCapacity: undefined
-    Count: 1
-    Items: [Object] (1)
-    LastEvaluatedKey: undefined
-    ScannedCount: 1
-    */
-
     const data = await ddbClient.send(new QueryCommand(params));
     return data;
 }
@@ -81,17 +70,6 @@ export const getUserByEmail = async ({ email }) => {
         // ProjectionExpression: "EMAIL, PASSWORD, BAND, FULL_NAME", // OPTIONAL | Fields to return
         TableName: "users",
     };
-
-
-    /*
-    -- Returned Fields --
-    $metadata: {httpStatusCode: 200, requestId: "ROIJ918DSHCM4F6C9JHS2JRH3BVV4KQNSO5AEMVJF66Q9ASUAAJG", extendedRequestId: undefined, cfId: undefined, attempts: 1, …}
-    ConsumedCapacity: undefined
-    Count: 1
-    Items: [Object] (1)
-    LastEvaluatedKey: undefined
-    ScannedCount: 1
-    */
 
     const data = await ddbClient.send(new QueryCommand(params));
     return data;
@@ -133,11 +111,6 @@ export const getUsersFromResponsibilityPaginated = async (user, pageNumber, page
     };
 
     const { Responses } = await ddbClient.send(new BatchGetItemCommand(params));
-    // const items = Responses["users"];
-
-    // Format of items
-    // page_number: 1
-    // users: Promise {status: "resolved", result: Array}
 
     return Responses.users;
 }
@@ -184,12 +157,6 @@ export const getTripReportsByDriverEmail = async (driverEmail, pageNumber, pageS
             results: paginatedResults,
         };
     } catch (err) {
-        throw(err);
+        throw (err);
     }
 }
-
-
-
-
-
-// The PUSH WORKED

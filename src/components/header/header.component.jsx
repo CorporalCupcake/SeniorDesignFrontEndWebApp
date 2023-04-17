@@ -34,6 +34,7 @@ const Header = ({ user, history }) => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link onClick={() => history.push('/create-user')}>Create User</Nav.Link>
+                        <Nav.Link onClick={() => history.push('/view-trips')}>View Trips</Nav.Link>
                         <Nav.Link onClick={() => history.push('/sandbox')}>Sandbox</Nav.Link>
                     </Nav>
 

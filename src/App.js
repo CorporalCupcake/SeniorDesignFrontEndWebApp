@@ -8,6 +8,7 @@ import LandingPage from "./pages/LandingPage";
 import Header from "./components/header/header.component";
 import SandboxPage from "./pages/SandboxPage";
 import CreateUserPage from "./pages/CreateUserPage";
+import TripsViewPage from "./pages/TripsViewPage";
 
 import AuthenticatedRoute from "./components/authenticatedRoute.component";
 
@@ -28,8 +29,9 @@ function App() {
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/login" component={LoginPage} />
         <AuthenticatedRoute exact={true} path="/home" component={HomePage} />
-        <AuthenticatedRoute exact={true} path="/sandbox" component={SandboxPage} />
+        <AuthenticatedRoute exact={true} path="/sandbox" component={SandboxPage} /> {/** For testing */}
         <AuthenticatedRoute exact={true} path="/create-user" component={CreateUserPage} />
+        <AuthenticatedRoute exact={true} path="/view-trips" component={TripsViewPage} />
         <Route path="" component={ErrorPage} />
       </Switch>
     </div>

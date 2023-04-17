@@ -1,6 +1,9 @@
 .create-user {
     margin: 1rem;
     width: 30%;
+    margin: 0 auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .form-group {
