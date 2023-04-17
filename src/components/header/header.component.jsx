@@ -27,7 +27,7 @@ const Header = ({ user, history }) => {
                         height="30"
                         className="d-inline-block align-top logo"
                     />{" "}
-                    {"Fatamat Bike"}
+                    <>{"Fatamat Bike"}</>
                 </Navbar.Brand >
 
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />

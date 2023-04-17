@@ -123,7 +123,7 @@ class CreateUser extends React.Component {
                 {/* Display an error banner if there is an error*/}
                 {this.state.isError ? <Alert key='danger' variant='danger'>{this.state.errorMessage}</Alert> : null}
 
-                {/* Display an success banner if there is an error*/}
+                {/* Display an success banner if successful*/}
                 {this.state.isSuccess ? <Alert key='success' variant='success'>{this.state.successMessage}</Alert> : null}
 
                 <Form>

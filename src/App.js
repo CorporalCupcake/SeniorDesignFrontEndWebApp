@@ -8,7 +8,7 @@ import LandingPage from "./pages/LandingPage";
 import Header from "./components/header/header.component";
 import SandboxPage from "./pages/SandboxPage";
 import CreateUserPage from "./pages/CreateUserPage";
-import TripsViewPage from "./pages/TripsViewPage";
+import TripsViewPage from "./pages/TripViewPage/TripsViewPage";
 
 import AuthenticatedRoute from "./components/authenticatedRoute.component";
 

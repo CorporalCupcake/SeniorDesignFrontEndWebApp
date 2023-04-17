@@ -56,7 +56,6 @@ const TripsViewTable = ({ driverEmail }) => {
                     <tbody>
                         {tripReports.map((item, index) => (
                             <tr key={index}>
-                                {console.log(item)}
                                 <td>{item.TripID.S}</td>
                                 <td>{item.DriverEmail.S}</td>
                                 <td>{item.StartTime.S}</td>
@@ -64,11 +63,14 @@ const TripsViewTable = ({ driverEmail }) => {
                                 <td>{item.RiskLevel.N}</td>
                                 <td>{item.InstanceReports.L.length}</td>
                                 <td>
-                                    {item.Videos.L.map((video, videoIndex) => (
-                                        <div key={videoIndex}>
-                                            <p><a href={video.M.link.S}>{video.M.location.S.toLowerCase().charAt(0).toUpperCase() + video.M.location.S.slice(1)}</a></p>
-                                        </div>
-                                    ))}
+                                    {item.Videos ?
+                                        item.Videos.L.map((video, videoIndex) => (
+                                            <div key={videoIndex}>
+                                                <p><a href={video.M.link.S}>{video.M.location.S.toLowerCase().charAt(0).toUpperCase() + video.M.location.S.slice(1)}</a></p>
+                                            </div>
+                                        ))
+                                        : null
+                                    }
 
                                 </td>
                             </tr>
