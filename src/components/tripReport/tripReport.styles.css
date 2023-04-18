@@ -1,31 +1,90 @@
-.trip-report {
-    background-color: #f5f5f5;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.trip-info {
-    margin: 0.5rem 0;
-    width: calc(50% - 1rem);
-    display: flex;
-    flex-direction: column;
-}
-
-.label {
+.report-form {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f7f7f7;
+    box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
+    border-radius: 15px;
+    margin-top: 1rem;
+    border-style: solid;
+    border-color: #4d4d4d;
+    border-width: 1px;
+    margin-bottom: 2rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
     font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-}
-
-.value {
+    margin-bottom: 2rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem !important;
+    margin-top: 2rem !important;
+  }
+  
+  .trip-details p,
+  .videos .video p,
+  .instance-reports .instance-report p {
     font-size: 1.2rem;
-}
-
-.trip-info:hover {
-    transform: translateY(-5px);
-    transition: transform 0.2s ease;
-}
+    margin: 0.5rem 0;
+  }
+  
+  .trip-details p strong,
+  .videos .video p strong,
+  .instance-reports .instance-report p strong {
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+  
+  .videos .video {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+  }
+  
+  .instance-reports .instance-report {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: inherit;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #4d4d4d;
+    border-width: 1px;
+  }
+  
+  .button {
+    display: inline-block;
+    background: #f0f0f0;
+    color: #4d4d4d;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 5px 5px 10px #d9d9d9, -5px -5px 10px #ffffff;
+    transition: all 0.2s ease-in-out;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .button:hover {
+    box-shadow: 3px 3px 5px #d9d9d9, -3px -3px 5px #ffffff;
+    transform: translate(2px, 2px);
+  }
+  
+  .button:active {
+    box-shadow: inset 3px 3px 5px #d9d9d9, inset -3px -3px 5px #ffffff;
+    transform: translate(2px, 2px);
+  }
+  

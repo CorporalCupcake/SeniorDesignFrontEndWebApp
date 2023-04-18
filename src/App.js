@@ -8,8 +8,8 @@ import LandingPage from "./pages/LandingPage";
 import Header from "./components/header/header.component";
 import SandboxPage from "./pages/SandboxPage";
 import CreateUserPage from "./pages/CreateUserPage";
-import TripsViewPage from "./pages/TripViewPage/TripsViewPage";
-
+import TripsViewPage from "./pages/TripsViewPage/TripsViewPage";
+import TripReportPage from "./pages/TripReport/TripReportPage";
 import AuthenticatedRoute from "./components/authenticatedRoute.component";
 
 // import { AiOutlineUser } from 'react-icons/ai';
@@ -32,6 +32,7 @@ function App() {
         <AuthenticatedRoute exact={true} path="/sandbox" component={SandboxPage} /> {/** For testing */}
         <AuthenticatedRoute exact={true} path="/create-user" component={CreateUserPage} />
         <AuthenticatedRoute exact={true} path="/view-trips" component={TripsViewPage} />
+        <AuthenticatedRoute exact={true} path="/trip-report" component={TripReportPage} />
         <Route path="" component={ErrorPage} />
       </Switch>
     </div>

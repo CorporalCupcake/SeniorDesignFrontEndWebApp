@@ -1,11 +1,15 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+
 import { getTripReportsByDriverEmail } from "../../aws_services/dynamo_db";
 import Loading from '../loading/loading.component'
+
+import { withRouter } from "react-router-dom";
+
 import "./tripsViewTable.styles.css";
 
-import React from 'react';
 
-const TripsViewTable = ({ driverEmail }) => {
+
+const TripsViewTable = ({ driverEmail, history }) => {
 
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize] = useState(2);
@@ -38,12 +42,20 @@ const TripsViewTable = ({ driverEmail }) => {
         }
     };
 
+    const handleTripClick = (item) => {
+        history.push({
+            pathname: "/trip-report",
+            state: { item } // pass the item object as a prop to the new page
+        });
+    };
+
     return (
         <>{tripReports === null ? <Loading /> :
             <>
                 <table className="trip-table">
                     <thead>
                         <tr>
+                            <th>Index</th>
                             <th>Trip ID</th>
                             <th>Driver Email</th>
                             <th>Start Time</th>
@@ -55,7 +67,8 @@ const TripsViewTable = ({ driverEmail }) => {
                     </thead>
                     <tbody>
                         {tripReports.map((item, index) => (
-                            <tr key={index}>
+                            <tr key={index} onClick={() => handleTripClick(item)}>
+                                <td>{index}</td>
                                 <td>{item.TripID.S}</td>
                                 <td>{item.DriverEmail.S}</td>
                                 <td>{item.StartTime.S}</td>
@@ -81,22 +94,9 @@ const TripsViewTable = ({ driverEmail }) => {
                     <button className='previous-button' onClick={handlePrevPage} disabled={pageNumber === 1}>Prev</button>
                     <button className='next-button' onClick={handleNextPage} disabled={pageNumber === totalPages}>Next</button>
                 </div>
-            </>
-        }</>
-    );
+            </>}
+        </>
+    )
 }
 
-{/* <td>
-{item.InstanceReports.L.map((instance, instanceIndex) => (
-    <div key={instanceIndex}>
-        <p>Instance ID: {instance.M.instanceID.S}</p>
-        <p>Classification: {instance.M.classification.S}</p>
-        <p>Avg Distance: {instance.M.avgDistance.L.map((avg, avgIndex) => (
-            <span key={avgIndex}>{avg.N}, </span>
-        ))}</p>
-        <p>Warning: {instance.M.warning.S}</p>
-    </div>
-))}
-</td> */}
-
-export default TripsViewTable;
+export default withRouter(TripsViewTable);

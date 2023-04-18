@@ -130,7 +130,6 @@ export const getTripDetailsByTripID = async (tripID) => {
 
 
 export const getTripReportsByDriverEmail = async (driverEmail, pageNumber, pageSize) => {
-    console.log(driverEmail)
     const params = {
         TableName: "TripReport",
         FilterExpression: "DriverEmail = :driverEmail",
