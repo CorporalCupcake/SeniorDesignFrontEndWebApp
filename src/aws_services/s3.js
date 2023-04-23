@@ -1,10 +1,9 @@
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 
+import { creds } from "./awsKey";
+
 const client = new S3Client({
-    credentials: {
-        accessKeyId: 'AKIAWTJZLRJS6FXG2ZMH',
-        secretAccessKey: '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',
-    },
+    credentials: creds,
     region: 'us-east-1'
 });
 
