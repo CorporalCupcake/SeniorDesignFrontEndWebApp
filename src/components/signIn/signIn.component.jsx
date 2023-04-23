@@ -5,10 +5,6 @@ import { MD5 } from 'crypto-js';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Alert from 'react-bootstrap/Alert';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-
 import { getUserByEmailAndPassword } from "../../aws_services/dynamo_db";
 import { signInAction } from "../../redux/auth/auth.actions";
 
@@ -60,25 +56,25 @@ class SignIn extends React.Component {
 
     render() {
         return (
-            <Form className='form'>
+            <form className='form-container'>
 
                 {/* Display an error banner if there is an error*/}
-                {this.state.isError ? <Alert key='danger' variant='danger'>{this.state.errorMessage}</Alert> : null}
+                {this.state.isError ? <div key='danger' className='error'>{this.state.errorMessage}</div> : null}
 
-                <Form.Group className="mb-3" controlId="formBasicEmail" onChange={event => this.handleChange('email', event)}>
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" />
-                </Form.Group>
+                <div className="form-field" onChange={event => this.handleChange('email', event)}>
+                    <label htmlFor="formBasicEmail" className="form-label">Email address</label>
+                    <input type="email" className="form-input" id="formBasicEmail" placeholder="Enter email" />
+                </div>
 
-                <Form.Group className="mb-3" controlId="formBasicPassword" onChange={event => this.handleChange('password', event)}>
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" />
-                </Form.Group>
+                <div className="form-field" onChange={event => this.handleChange('password', event)}>
+                    <label htmlFor="formBasicPassword" className="form-label">Password</label>
+                    <input type="password" className="form-input" id="formBasicPassword" placeholder="Password" />
+                </div>
 
-                <Button className="button" variant="outline-primary" onClick={this.handleSubmit}>
+                <button type="button" className="form-button" onClick={this.handleSubmit}>
                     Sign In
-                </Button>
-            </Form>
+                </button>
+            </form>
         )
     }
 }

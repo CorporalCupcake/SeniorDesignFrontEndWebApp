@@ -1,14 +1,13 @@
 import { DynamoDBClient, PutItemCommand, QueryCommand, ScanCommand, BatchGetItemCommand } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb"
 
+import { creds } from "./awsKey";
+
 // ----------------------- DYNAMO DB CONFIGURATION FILES -----------------------
 
 // Create the Dynamo DB Client with the region and user access keys. There is also a shared config file with the keys stores in ~/.aws/config*
 const ddbClient = new DynamoDBClient({
-    credentials: {
-        accessKeyId: 'AKIAWTJZLRJS6FXG2ZMH',
-        secretAccessKey: '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',
-    },
+    credentials: creds,
     region: 'us-east-1'
 });
 

@@ -1,0 +1,70 @@
+.neumorphic-button {
+    display: inline-block;
+    padding: 16px 24px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 16px;
+    background-color: #e0e5ec;
+    box-shadow:
+        -10px -10px 20px rgba(255, 255, 255, 0.5),
+        10px 10px 20px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease-in-out;
+}
+
+.neumorphic-button:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        -8px -8px 20px rgba(255, 255, 255, 0.8),
+        8px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.neumorphic-button:active {
+    transform: translateY(0);
+    box-shadow:
+        -5px -5px 10px rgba(255, 255, 255, 1),
+        5px 5px 10px rgba(0, 0, 0, 0.4);
+}
+
+.neumorphic-button:before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: inherit;
+    background: linear-gradient(to bottom right,
+            #ffc7b0,
+            #ffb6c1,
+            #ffa4d1,
+            #ff91e1,
+            #ff7cf0);
+    z-index: -1;
+    filter: blur(20px);
+}
+
+.neumorphic-button:after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: inherit;
+    background: linear-gradient(to bottom right,
+            #ffc7b0,
+            #ffb6c1,
+            #ffa4d1,
+            #ff91e1,
+            #ff7cf0);
+    z-index: -2;
+    filter: blur(40px);
+}
+
+.neumorphic-button:hover:before,
+.neumorphic-button:hover:after {
+    filter: none;
+}
