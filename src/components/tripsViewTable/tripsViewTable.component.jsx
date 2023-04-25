@@ -12,7 +12,7 @@ import "./tripsViewTable.styles.css";
 const TripsViewTable = ({ driverEmail, history }) => {
 
     const [pageNumber, setPageNumber] = useState(1);
-    const [pageSize] = useState(2);
+    const [pageSize, setPageSize] = useState(2);
     const [totalPages, setTotalPages] = useState(1);
     const [tripReports, setTripReports] = useState(null);
 

@@ -158,3 +158,53 @@ export const getTripReportsByDriverEmail = async (driverEmail, pageNumber, pageS
         throw (err);
     }
 }
+
+export const getMessagesUsingRecieverEmail = async (receiverEmail, onlyStarred, onlyFlagged, pageNumber, pageSize) => {
+    let filterExpression = 'recieverEmail = :receiverEmail';
+    const expressionAttributeValues = {
+        ':receiverEmail': { S: receiverEmail }
+    };
+
+    if (onlyStarred) {
+        filterExpression += ' AND starredByReciever = :starredByReciever';
+        expressionAttributeValues[':starredByReciever'] = { BOOL: true };
+    }
+
+    if (onlyFlagged) {
+        filterExpression += ' AND flaggedImportantBySender = :flaggedImportantBySender';
+        expressionAttributeValues[':flaggedImportantBySender'] = { BOOL: true };
+    }
+
+    const params = {
+        TableName: 'Messages',
+        FilterExpression: filterExpression,
+        ExpressionAttributeValues: expressionAttributeValues,
+        Limit: pageSize,
+        // ExclusiveStartKey: pageNumber > 1 ? { messageID: { S: `${receiverEmail};2023-04-23;14:27:53` } } : null
+    };
+
+    try {
+        const data = await ddbClient.send(new ScanCommand(params));
+
+        const totalItems = data.Count;
+        const itemsPerPage = pageSize;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        const startIndex = (pageNumber - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        const paginatedResults = data.Items.slice(startIndex, endIndex);
+
+        return {
+            totalItems,
+            totalPages,
+            itemsPerPage,
+            pageNumber,
+            results: paginatedResults,
+        };
+    } catch (err) {
+        throw (err);
+    }
+
+
+}
