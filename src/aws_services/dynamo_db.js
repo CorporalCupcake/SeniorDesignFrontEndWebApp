@@ -206,5 +206,53 @@ export const getMessagesUsingRecieverEmail = async (receiverEmail, onlyStarred, 
         throw (err);
     }
 
+}
 
+export const generateDriverBehavioralReport = async (tripIDs) => {
+    const params = {
+        RequestItems: {
+            TripReport: {
+                Keys: tripIDs.map(tripID => ({ TripID: { S: tripID } })),
+                ProjectionExpression: 'InstanceReports, RiskLevel',
+            }
+        }
+    };
+
+    try {
+        const results = await ddbClient.send(new BatchGetItemCommand(params));
+        const instances = results.Responses.TripReport.map(trip => trip.InstanceReports.L).flat();
+        const riskLevels = results.Responses.TripReport.map(trip => parseInt(trip.RiskLevel.N));
+
+        const avgRiskLevel = riskLevels.reduce((sum, level) => sum + level, 0) / riskLevels.length;
+
+        const maneuvers = instances.reduce((maneuvers, instance) => {
+            const warning = instance.M.warning.S.trim();
+            if (warning.length > 0) {
+                const parts = warning.split('|').filter(part => part.trim().length > 0);
+                parts.forEach(part => {
+                    if (part in maneuvers) {
+                        maneuvers[part]++;
+                    } else {
+                        maneuvers[part] = 1;
+                    }
+                });
+            }
+            return maneuvers;
+        }, {});
+
+        const mostFrequentManeuver = Object.entries(maneuvers).reduce((mostFrequent, [maneuver, count]) => {
+            if (count > mostFrequent.count) {
+                return { maneuver, count };
+            } else {
+                return mostFrequent;
+            }
+        }, { maneuver: '', count: 0 });
+
+        return {
+            avgRiskLevel,
+            mostFrequentManeuver,
+        };
+    } catch (err){
+        console.error(err)
+    }
 }

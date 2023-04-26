@@ -10,6 +10,8 @@ import SandboxPage from "./pages/SandboxPage";
 import CreateUserPage from "./pages/CreateUserPage";
 import TripsViewPage from "./pages/TripsViewPage/TripsViewPage";
 import TripReportPage from "./pages/TripReport/TripReportPage";
+import generateBehaviourReportPage from "./pages/GenerateBehaviourReportPage/generateBehaviourReportPage";
+import BehaviourReportPage from "./pages/BehviourReport/BehaviourReportPage";
 import AuthenticatedRoute from "./components/authenticatedRoute.component";
 
 // import { AiOutlineUser } from 'react-icons/ai';
@@ -33,6 +35,8 @@ function App() {
         <AuthenticatedRoute exact={true} path="/create-user" component={CreateUserPage} />
         <AuthenticatedRoute exact={true} path="/view-trips" component={TripsViewPage} />
         <AuthenticatedRoute exact={true} path="/trip-report" component={TripReportPage} />
+        <AuthenticatedRoute exact={true} path="/generate-behaviour-report" component={generateBehaviourReportPage} />
+        <AuthenticatedRoute exact={true} path="/view-behaviour-report" component={BehaviourReportPage} />
         <Route path="" component={ErrorPage} />
       </Switch>
     </div>

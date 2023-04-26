@@ -6,22 +6,35 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
 import TripsViewTable from '../../components/tripsViewTable/tripsViewTable.component'
+import { Button } from "react-bootstrap";
 
-import './TripsViewPage.css'
-
-const TripsViewPage = ({ user, history }) => {
+const GenerateBehaviourReportPage = ({ user, history }) => {
     const [selectedEmail, setSelectedEmail] = useState('');
+    const [selectedTrips, setSelectedTrips] = useState([])
 
     const handleEmailChange = (event) => {
         setSelectedEmail(event.target.value);
     }
 
     const handleTripClick = (item) => {
-        history.push({
-            pathname: "/trip-report",
-            state: { item } // pass the item object as a prop to the new page
-        });
+        const tripID = item.TripID.S;
+
+        if (selectedTrips.includes(tripID)) { // deselect the trip ID
+            const updatedTrips = selectedTrips.filter((selectedTripID) => selectedTripID !== tripID);
+            setSelectedTrips(updatedTrips);
+        } else { // select the trip ID
+            const updatedTrips = [...selectedTrips, tripID];
+            setSelectedTrips(updatedTrips);
+        }
     };
+
+    const handleGenerateBehaviouralTripReport = (tripIDs) => {
+        history.push({
+            pathname: "/view-behaviour-report",
+            state: { tripIDs } // pass the item object as a prop to the new page
+        });
+    }
+
 
     const responsibilityList = user.RESPONSIBILITY_LIST.L.map((email, index) => {
         return (
@@ -40,6 +53,7 @@ const TripsViewPage = ({ user, history }) => {
             </div>
 
             <TripsViewTable driverEmail={selectedEmail} onClickTripFunction={handleTripClick} />
+            <Button onClick={() => handleGenerateBehaviouralTripReport(selectedTrips)}>Generate Trip Report</Button>
         </div>
     );
 }
@@ -48,4 +62,4 @@ const mapStateToProps = createStructuredSelector({
     user: selectUser
 });
 
-export default withRouter(connect(mapStateToProps)(TripsViewPage));
+export default withRouter(connect(mapStateToProps)(GenerateBehaviourReportPage));

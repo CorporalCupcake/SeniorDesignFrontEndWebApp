@@ -3,13 +3,11 @@ import React, { useState, useEffect } from "react";
 import { getTripReportsByDriverEmail } from "../../aws_services/dynamo_db";
 import Loading from '../loading/loading.component'
 
-import { withRouter } from "react-router-dom";
-
 import "./tripsViewTable.styles.css";
 
 
 
-const TripsViewTable = ({ driverEmail, history }) => {
+const TripsViewTable = ({ driverEmail, onClickTripFunction }) => {
 
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize, setPageSize] = useState(2);
@@ -42,13 +40,6 @@ const TripsViewTable = ({ driverEmail, history }) => {
         }
     };
 
-    const handleTripClick = (item) => {
-        history.push({
-            pathname: "/trip-report",
-            state: { item } // pass the item object as a prop to the new page
-        });
-    };
-
     return (
         <>{tripReports === null ? <Loading /> :
             <>
@@ -67,7 +58,7 @@ const TripsViewTable = ({ driverEmail, history }) => {
                     </thead>
                     <tbody>
                         {tripReports.map((item, index) => (
-                            <tr key={index} onClick={() => handleTripClick(item)}>
+                            <tr key={index} onClick={() => onClickTripFunction(item)}>
                                 <td>{index}</td>
                                 <td>{item.TripID.S}</td>
                                 <td>{item.DriverEmail.S}</td>
@@ -99,4 +90,4 @@ const TripsViewTable = ({ driverEmail, history }) => {
     )
 }
 
-export default withRouter(TripsViewTable);
+export default TripsViewTable;
