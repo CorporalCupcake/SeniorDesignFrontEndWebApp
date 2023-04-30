@@ -252,7 +252,41 @@ export const generateDriverBehavioralReport = async (tripIDs) => {
             avgRiskLevel,
             mostFrequentManeuver,
         };
-    } catch (err){
+    } catch (err) {
         console.error(err)
     }
 }
+
+export async function getBikes(pageNumber, pageSize, userEmail, band) {
+    try {
+        const params = {
+            TableName: 'Bike',
+            Limit: pageSize,
+            ExclusiveStartKey: (pageNumber - 1) * pageSize,
+            FilterExpression: 'DriverEmail = :driverEmail',
+            ExpressionAttributeValues: {
+                ':driverEmail': {
+                    S: userEmail
+                }
+            }
+        };
+
+        if (band === 'MANAGER') {
+            params.FilterExpression = 'attribute_not_exists(DriverEmail) OR DriverEmail IN (:driverEmail, :responsibilityList)';
+            params.ExpressionAttributeValues[':responsibilityList'] = {
+                L: [{
+                    S: userEmail
+                }]
+            };
+        }
+
+        const result = await ddbClient.send(new ScanCommand(params));
+        return result;
+    } catch (error) {
+        console.error('Error retrieving bikes:', error);
+        throw error;
+    }
+}
+
+
+// FilterExpression: 'attribute_not_exists(DriverEmail) OR DriverEmail = :driverEmail',

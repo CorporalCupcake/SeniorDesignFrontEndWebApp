@@ -1,0 +1,10 @@
+.loginpage_container {
+    width: 40%;
+    margin: auto;
+}
+
+@media only screen and (max-width: 768px) {
+    .loginpage_container {
+        padding: 0 20px;
+    }
+}

@@ -84,5 +84,4 @@ const mapDispatchToProps = dispatch => ({
     setUserInStore: user => dispatch(signInAction(user))
 })
 
-
 export default withRouter(connect(null, mapDispatchToProps)(SignIn));
