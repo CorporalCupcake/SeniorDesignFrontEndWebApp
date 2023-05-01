@@ -322,7 +322,7 @@ export const insertBehaviouralReport = async ({ tripIDs, report }) => {
     const tripIDs_S = tripIDs.join()
     const params = {
         TableName: "BehaviouralReports",
-        Item: AWS.DynamoDB.Converter.marshall({ tripIDs:tripIDs_S, report }),
+        Item: AWS.DynamoDB.Converter.marshall({ tripIDs: tripIDs_S, report }),
     };
 
     try {
@@ -332,6 +332,37 @@ export const insertBehaviouralReport = async ({ tripIDs, report }) => {
         return response;
     } catch (err) {
         console.error(`Failed to insert report for trips: ${tripIDs}`);
+        console.error(err);
+        throw err;
+    }
+}
+
+
+export const getUserEmergencyContact = async (driverEmail) => {
+    const params = {
+        TableName: "Bike",
+        FilterExpression: "DriverEmail = :driverEmail",
+        ExpressionAttributeValues: {
+            ":driverEmail": { S: driverEmail },
+        },
+        ProjectionExpression: "EmergencyContacts",
+    };
+
+    try {
+        const command = new ScanCommand(params);
+        const { Items } = await ddbClient.send(command);
+
+        if (Items.length === 0) {
+            throw new Error(`No emergency contacts found for driver email: ${driverEmail}`);
+        }
+
+        const [result] = Items;
+
+        console.log(result)
+
+        return AWS.DynamoDB.Converter.unmarshall(result);
+    } catch (err) {
+        console.error(`Failed to retrieve emergency contacts for driver email: ${driverEmail}`);
         console.error(err);
         throw err;
     }

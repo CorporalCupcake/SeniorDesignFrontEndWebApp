@@ -1,0 +1,53 @@
+.user-details {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    width: 40%;
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.user-details h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.user-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info-row {
+    margin-bottom: 10px;
+}
+
+.user-info-label {
+    width: 30%;
+    font-weight: bold;
+}
+
+.user-info-value {
+    width: 70%;
+    font-size: 16px;
+}
+
+.user-info-value li {
+    list-style-type: none;
+    margin-bottom: 10px;
+}
+
+.user-info-value p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.user-info-value p:first-child {
+    font-weight: bold;
+}

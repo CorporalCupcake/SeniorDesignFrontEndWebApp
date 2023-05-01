@@ -1,0 +1,35 @@
+.select-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.select-wrapper label {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.select-wrapper select {
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+}
+
+.select-wrapper select:hover {
+    border: 1px solid #333;
+}
+
+.select-wrapper select:focus {
+    border: 1px solid #333;
+}
+
+.select-wrapper option {
+    font-size: 18px;
+}
+
+/* Remove ViewUser styles */

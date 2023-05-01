@@ -113,7 +113,7 @@ const TripsManagment = ({ user }) => {
 
     return (<>
         <div className="select-wrapper">
-            <label><span>Driver Email</span></label>
+            <div className="label_select">Driver Email:</div>
             <select onChange={handleEmailChange} value={driverEmail}>
                 <option value="">Select Email</option>
                 {responsibilityList}

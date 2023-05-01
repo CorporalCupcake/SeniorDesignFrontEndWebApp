@@ -5,7 +5,7 @@
     align-items: center;
 }
 
-.select-wrapper label {
+.select-wrapper .label_select {
     font-size: 1.2rem;
     margin-right: 1rem;
 }

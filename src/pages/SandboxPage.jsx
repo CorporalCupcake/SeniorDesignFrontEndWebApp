@@ -1,10 +1,10 @@
 import React from "react";
 
-import TripsManagment from "../components/tripsManagment/tripsManagment.component";
+import ViewUserPage from "./ViewUserPage/ViewUserPage";
 
 const SandboxPage =() => {
     return (
-        <TripsManagment/>
+        <ViewUserPage/>
     )
 
 }
