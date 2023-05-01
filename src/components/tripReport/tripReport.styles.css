@@ -1,90 +1,102 @@
 .report-form {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    background-color: #f7f7f7;
-    box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
-    border-radius: 15px;
-    margin-top: 1rem;
-    border-style: solid;
-    border-color: #4d4d4d;
-    border-width: 1px;
-    margin-bottom: 2rem;
-  }
-  
-  h2 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 2rem;
-  }
-  
-  h3 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1rem !important;
-    margin-top: 2rem !important;
-  }
-  
-  .trip-details p,
-  .videos .video p,
-  .instance-reports .instance-report p {
-    font-size: 1.2rem;
-    margin: 0.5rem 0;
-  }
-  
-  .trip-details p strong,
-  .videos .video p strong,
-  .instance-reports .instance-report p strong {
-    font-weight: bold;
-    margin-right: 0.5rem;
-  }
-  
-  .videos .video {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    background-color: #fff;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-  }
-  
-  .instance-reports .instance-report {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    background-color: inherit;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    border-style: solid;
-    border-color: #4d4d4d;
-    border-width: 1px;
-  }
-  
-  .button {
-    display: inline-block;
-    background: #f0f0f0;
-    color: #4d4d4d;
-    padding: 10px 20px;
-    border-radius: 50px;
-    box-shadow: 5px 5px 10px #d9d9d9, -5px -5px 10px #ffffff;
-    transition: all 0.2s ease-in-out;
-    font-size: 16px;
-    text-decoration: none;
-    text-align: center;
-    margin: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .button:hover {
-    box-shadow: 3px 3px 5px #d9d9d9, -3px -3px 5px #ffffff;
-    transform: translate(2px, 2px);
-  }
-  
-  .button:active {
-    box-shadow: inset 3px 3px 5px #d9d9d9, inset -3px -3px 5px #ffffff;
-    transform: translate(2px, 2px);
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  border: 3px solid #000;
+  border-radius: 10px;
+  width: 30%;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.report-form u {
+  text-decoration: underline;
+  margin-top: 10px;
+}
+
+.report-form h2 {
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.report-form .trip-details {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.report-form .trip-details h3 {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.report-form .trip-details p {
+  margin-bottom: 5px;
+}
+
+.report-form .videos {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.report-form .videos h3 {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.report-form .videos .button {
+  display: inline-block;
+  padding: 10px 50px;
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #0077FF;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  border: 2px solid #0077FF;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.report-form .videos .button:hover {
+  background-color: #fff;
+  color: #0077FF;
+  border: 2px solid #0077FF;
+}
+
+.report-form .videos {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.report-form .instance-reports {
+  margin-top: 20px;
+  text-align: left;
+  margin-bottom: 50px;
+}
+
+.report-form .instance-reports h3 {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.report-form .instance-report {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.report-form .instance-report p {
+  margin-bottom: 5px;
+}

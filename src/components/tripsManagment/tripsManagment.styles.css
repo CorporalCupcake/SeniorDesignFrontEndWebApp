@@ -1,0 +1,154 @@
+/* Select box styles */
+.select-wrapper {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.select-wrapper label {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+}
+
+.select-wrapper select {
+    margin: auto;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    color: #333;
+    transition: all 0.3s ease;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.select-wrapper select:hover,
+.select-wrapper select:focus {
+    outline: none;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Table styles */
+.trip-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+}
+
+.trip-table th,
+.trip-table td {
+    padding: 1rem;
+    text-align: left;
+    font-size: 1.2rem;
+    border: 1px solid #ccc;
+}
+
+.trip-table th {
+    background-color: #f2f2f2;
+}
+
+.trip-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Pagination styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.pagination button {
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.pagination button:hover,
+.pagination button:focus {
+    outline: none;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #a0a0a0;
+}
+
+/* Behavioural Report button styles */
+.button-br {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    transition: all 0.3s ease;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.button-br:hover,
+.button-br:focus {
+    outline: none;
+    background-color: #0069d9;
+    cursor: pointer;
+}
+
+.next-button {
+    margin-left: 30px;
+    background-color: rgb(0, 181, 33);
+}
+
+.previous-button {
+    margin-left: 30px;
+    background-color: rgb(255, 208, 0);
+}
+
+
+.checkbox {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: inline-block;
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    transition: all 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.checkbox:checked {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.checkbox:checked::before {
+    content: "\2714";
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 4px;
+    color: #fff;
+    font-size: 11px;
+}
+
+.checkbox:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.checkbox:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

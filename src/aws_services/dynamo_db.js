@@ -1,7 +1,8 @@
-import { DynamoDBClient, PutItemCommand, QueryCommand, ScanCommand, BatchGetItemCommand } from "@aws-sdk/client-dynamodb";
+import { GetItemCommand, DynamoDBClient, PutItemCommand, QueryCommand, ScanCommand, BatchGetItemCommand } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb"
-
 import { creds } from "./awsKey";
+
+const AWS = require('aws-sdk');
 
 // ----------------------- DYNAMO DB CONFIGURATION FILES -----------------------
 
@@ -37,12 +38,13 @@ const ddbDocClient = DynamoDBDocumentClient.from(ddbClient, {
 
 export const putItemInTable = async ({ TableName, Item }) => {
     try {
-        return await ddbDocClient.send(new PutItemCommand({ TableName, Item }));
+        const response = await ddbDocClient.send(new PutItemCommand({ TableName, Item }));
+        return response;
     } catch (err) {
-        return err
+        console.error('Error putting item:', err);
+        return err;
     }
 };
-
 
 export const getUserByEmailAndPassword = async ({ email, password }) => {
     const params = {
@@ -290,3 +292,47 @@ export async function getBikes(pageNumber, pageSize, userEmail, band) {
 
 
 // FilterExpression: 'attribute_not_exists(DriverEmail) OR DriverEmail = :driverEmail',
+
+export const getBehaviouralReportById = async (id) => {
+    const params = {
+        KeyConditionExpression: 'tripIDs = :id', // This is finding by the partition key
+        ExpressionAttributeValues: {
+            ':id': { S: id }
+        },
+        TableName: "BehaviouralReports",
+    };
+
+    try {
+        const command = new QueryCommand(params);
+        const response = await ddbClient.send(command);
+
+        if (response.Count === 1) {
+            return (AWS.DynamoDB.Converter.unmarshall(response.Items[0]));
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+
+
+export const insertBehaviouralReport = async ({ tripIDs, report }) => {
+    const tripIDs_S = tripIDs.join()
+    const params = {
+        TableName: "BehaviouralReports",
+        Item: AWS.DynamoDB.Converter.marshall({ tripIDs:tripIDs_S, report }),
+    };
+
+    try {
+        const command = new PutItemCommand(params);
+        const response = await ddbClient.send(command);
+        console.log(`Successfully inserted report for trips: ${tripIDs}`);
+        return response;
+    } catch (err) {
+        console.error(`Failed to insert report for trips: ${tripIDs}`);
+        console.error(err);
+        throw err;
+    }
+}

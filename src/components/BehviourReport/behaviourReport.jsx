@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Loading from "../loading/loading.component";
 
 import { generateDriverBehavioralReport } from "../../aws_services/dynamo_db";
+import { insertBehaviouralReport, getBehaviouralReportById } from "../../aws_services/dynamo_db";
 
 import "./behaviourReport.css";
 
@@ -12,13 +13,26 @@ const BehaviourReport = ({ tripIDs }) => {
 
     useEffect(() => {
         const getReport = async () => {
-            try {
-                const result = await generateDriverBehavioralReport(tripIDs);
-                console.log(result);
-                setReport(result);
-                setLoading(false);
-            } catch (error) {
-                console.log(error);
+            if (tripIDs !== null) {
+                try {
+                    const temp = await getBehaviouralReportById(tripIDs.join());
+                    if (temp === false) {
+                        const result = await generateDriverBehavioralReport(tripIDs);
+                        insertBehaviouralReport({
+                            tripIDs: tripIDs,
+                            report: result
+                        })
+                        console.log('inserted')
+                        setReport(result);
+                        setLoading(false);
+                    } else {
+                        console.log('report exists')
+                        setReport(temp.report)
+                        setLoading(false);
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
             }
         };
 

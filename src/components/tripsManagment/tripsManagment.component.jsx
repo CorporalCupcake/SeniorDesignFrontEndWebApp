@@ -4,14 +4,12 @@ import { getTripReportsByDriverEmail } from "../../aws_services/dynamo_db";
 import Loading from '../loading/loading.component'
 import { HiOutlineDocumentReport } from 'react-icons/hi';
 import { IconContext } from "react-icons";
-import { withRouter } from "react-router-dom";
 
 import BehaviourReport from "../BehviourReport/behaviourReport";
 
 import { selectUser } from "../../redux/auth/auth.selector";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
-import { generateDriverBehavioralReport } from "../../aws_services/dynamo_db";
 
 import TripReport from '../tripReport/tripReport.component'
 
@@ -36,6 +34,20 @@ const TripsManagment = ({ user }) => {
             <option key={index} value={email.S}>{email.S}</option>
         )
     })
+
+    const convertTime = (datetimeStr) => {
+        const year = datetimeStr.slice(4, 8);
+        const month = parseInt(datetimeStr.slice(2, 4)) - 1; // months are 0-indexed in JS Date objects
+        const day = datetimeStr.slice(0, 2);
+        const hour = datetimeStr.slice(9, 11);
+        const minute = datetimeStr.slice(11, 13);
+
+        const dateObj = new Date(Date.UTC(year, month, day, hour, minute)); // create date object in UTC timezone
+
+        const options = { timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
+        const finalDateTimeStr = dateObj.toLocaleString('en-US', options); // convert date object to string in the desired format (in Dubai timezone)
+        return finalDateTimeStr;
+    }
 
 
     useEffect(() => {
@@ -78,6 +90,10 @@ const TripsManagment = ({ user }) => {
         }
     };
 
+    const isChecked = (tripID) => {
+        return selectedTripIds.includes(tripID)
+    }
+
 
 
     if (tripReports === null) {
@@ -86,10 +102,10 @@ const TripsManagment = ({ user }) => {
 
 
     if (tripReportToView !== null) {
-        return <TripReport tripData={tripReportToView} />
+        return <TripReport className='trip-report' tripData={tripReportToView} />
     }
 
-    if(viewBR === true){
+    if (viewBR === true) {
         return <BehaviourReport tripIDs={selectedTripIds} />
     }
 
@@ -103,11 +119,12 @@ const TripsManagment = ({ user }) => {
                 {responsibilityList}
             </select>
         </div>
+
+
         <table className="trip-table">
             <thead>
                 <tr>
                     <th>Include in Behavioural Report</th>
-                    <th>Index</th>
                     <th>Trip ID</th>
                     <th>Driver Email</th>
                     <th>Start Time</th>
@@ -121,19 +138,18 @@ const TripsManagment = ({ user }) => {
             <tbody>
                 {tripReports.map((item, index) => (
                     <tr key={index}>
-                        <td><input type="checkbox" onClick={e => handleCheckboxClick(e, item.TripID.S)} /></td>
-                        <td>{index}</td>
+                        <td><input className='checkbox' type="checkbox" onClick={e => handleCheckboxClick(e, item.TripID.S)} checked={isChecked(item.TripID.S)} /></td>
                         <td>{item.TripID.S}</td>
                         <td>{item.DriverEmail.S}</td>
-                        <td>{item.StartTime.S}</td>
-                        <td>{item.EndTime.S}</td>
+                        <td>{convertTime(item.StartTime.S)}</td>
+                        <td>{convertTime(item.EndTime.S)}</td>
                         <td>{item.RiskLevel.N}</td>
                         <td>{item.InstanceReports.L.length}</td>
-                        <td><button onClick={() => setTripReportToView(item)}>
+                        <td><div className='click-report'onClick={() => setTripReportToView(item)}>
                             <IconContext.Provider value={{ color: 'green', size: '50px' }}>
                                 <HiOutlineDocumentReport />
                             </IconContext.Provider>
-                        </button></td>
+                        </div></td>
 
                     </tr>
                 ))}
@@ -153,4 +169,4 @@ const mapStateToProps = createStructuredSelector({
     user: selectUser
 });
 
-export default withRouter(connect(mapStateToProps)(TripsManagment));
+export default connect(mapStateToProps)(TripsManagment);
