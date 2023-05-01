@@ -54,6 +54,7 @@ class CreateUser extends React.Component {
                     : this.props.user.COMPANY.S,
             band: null,
             id_number: null,
+            superior_email: null,
             isError: false,
             errorMessage: null,
             isSuccess: false,
@@ -71,7 +72,7 @@ class CreateUser extends React.Component {
 
 
     handleSubmit = async () => {
-        const { email, password, full_name, company, band, id_number } = this.state;
+        const { email, password, full_name, company, band, id_number, superior_email } = this.state;
 
         this.setState({
             isError: false,
@@ -79,7 +80,6 @@ class CreateUser extends React.Component {
             isSuccess: false,
             successMessage: null
         });
-
 
         const data = await putItemInTable({
             TableName: "users",
@@ -91,9 +91,9 @@ class CreateUser extends React.Component {
                 FULL_NAME: { S: full_name },
                 RESPONSIBILITY_LIST: { L: [] },
                 ID_NUMBER: { S: id_number },
+                SUPERIOR_EMAIL: { S: this.props.user.EMAIL.S }
             },
         });
-
 
         if (data.$metadata.httpStatusCode === 200) { // Success
             this.setState({
@@ -101,10 +101,24 @@ class CreateUser extends React.Component {
                 successMessage: `User ${this.state.full_name} created successfully.`,
             });
 
-            updateUserResponsibilityList({
-                currentUser: this.props.user,
-                newUserEmail: this.state.email
-            })
+            if (this.props.user.BAND.S === 'ADMIN') {
+                updateUserResponsibilityList({
+                    currentUserEmail: this.props.user.EMAIL.S,
+                    newUserEmail: this.state.email
+                });
+            } else if (this.props.user.BAND.S === 'MANAGER') {
+                // Update the RL of the Manager
+                updateUserResponsibilityList({
+                    currentUserEmail: this.props.user.EMAIL.S,
+                    newUserEmail: this.state.email
+                })
+
+                // Update the RL of the Manager's Superior
+                updateUserResponsibilityList({
+                    currentUserEmail: this.props.user.SUPERIOR_EMAIL.S,
+                    newUserEmail: this.state.email
+                })
+            }
 
 
         } else {
@@ -166,6 +180,18 @@ class CreateUser extends React.Component {
                         <Form.Label>ID Number</Form.Label>
                         <Form.Control type="text" placeholder="ID Number" />
                     </Form.Group>
+
+                    {/* -------------------------- SUPERIOR EMAIL --------------------------*/}
+
+                    <Form.Group
+                        className="mb-3"
+                        controlId="formBasicPassword"
+                        onChange={(event) => this.handleChange("superior_email", event)}
+                    >
+                        <Form.Label>Superior Email</Form.Label>
+                        <Form.Control type="text" placeholder={this.props.user.EMAIL.S} disabled />
+                    </Form.Group>
+
 
                     {/* -------------------------- BAND --------------------------*/}
                     <div style={{ marginBottom: "0.4rem" }}>User Band</div>

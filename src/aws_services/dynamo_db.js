@@ -9,7 +9,8 @@ const AWS = require('aws-sdk');
 // Create the Dynamo DB Client with the region and user access keys. There is also a shared config file with the keys stores in ~/.aws/config*
 const ddbClient = new DynamoDBClient({
     credentials: creds,
-    region: 'us-east-1'
+    region: 'us-east-1',
+    removeUndefinedValues: true,
 });
 
 const marshallOptions = {
@@ -76,12 +77,12 @@ export const getUserByEmail = async ({ email }) => {
     return data;
 }
 
-export const updateUserResponsibilityList = async ({ currentUser, newUserEmail }) => {
+export const updateUserResponsibilityList = async ({ currentUserEmail, newUserEmail }) => {
 
     const params = {
         TableName: "users",
         Key: {
-            EMAIL: currentUser.EMAIL.S
+            EMAIL: currentUserEmail
         },
         UpdateExpression: 'set RESPONSIBILITY_LIST = list_append(RESPONSIBILITY_LIST, :rl)',
         ExpressionAttributeValues: {
@@ -92,7 +93,7 @@ export const updateUserResponsibilityList = async ({ currentUser, newUserEmail }
     try {
         return await ddbDocClient.send(new UpdateCommand(params));
     } catch (err) {
-        console.log("Error", err);
+        console.error("Error", err);
     }
 
 }

@@ -3,7 +3,7 @@ import "./App.css";
 
 import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
-import LandingPage from "./pages/LandingPage";
+import LandingPage from "./pages/LandingPage/LandingPage";
 import Header from "./components/header/header.component";
 import SandboxPage from "./pages/SandboxPage";
 import CreateUserPage from "./pages/CreateUserPage";
