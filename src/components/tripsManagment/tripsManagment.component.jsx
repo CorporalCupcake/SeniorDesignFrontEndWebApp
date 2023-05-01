@@ -18,7 +18,7 @@ import "./tripsManagment.styles.css";
 const TripsManagment = ({ user }) => {
 
     const [pageNumber, setPageNumber] = useState(1);
-    const [pageSize, setPageSize] = useState(4);
+    const [pageSize, setPageSize] = useState(100);
     const [totalPages, setTotalPages] = useState(1);
 
     const [tripReports, setTripReports] = useState(null);
@@ -130,7 +130,6 @@ const TripsManagment = ({ user }) => {
                     <th>Start Time</th>
                     <th>End Time</th>
                     <th>Risk Level</th>
-                    <th>Risky Instance(s) Count</th>
                     <th>View Trip Report</th>
                 </tr>
             </thead>
@@ -144,7 +143,6 @@ const TripsManagment = ({ user }) => {
                         <td>{convertTime(item.StartTime.S)}</td>
                         <td>{convertTime(item.EndTime.S)}</td>
                         <td>{item.RiskLevel.N}</td>
-                        <td>{item.InstanceReports.L.length}</td>
                         <td><div className='click-report'onClick={() => setTripReportToView(item)}>
                             <IconContext.Provider value={{ color: 'green', size: '50px' }}>
                                 <HiOutlineDocumentReport />

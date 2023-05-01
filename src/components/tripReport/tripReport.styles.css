@@ -1,102 +1,82 @@
 .report-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  border: 3px solid #000;
-  border-radius: 10px;
-  width: 40%;
-  margin: auto;
-  margin-top: 20px;
-}
-
-.report-form u {
-  text-decoration: underline;
-  margin-top: 10px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .report-form h2 {
+  margin-top: 0;
   margin-bottom: 20px;
-  font-weight: bold;
-  font-size: 24px;
+  font-size: 2rem;
+  color: #333;
+  text-decoration: underline;
 }
 
-.report-form .trip-details {
-  margin-top: 20px;
-  text-align: left;
+.trip-details,
+.videos,
+.instance-reports {
+  margin-bottom: 20px;
 }
 
-.report-form .trip-details h3 {
+.trip-details h3,
+.videos h3,
+.instance-reports h3 {
+  margin-top: 0;
   margin-bottom: 10px;
-  font-weight: bold;
-  font-size: 20px;
+  font-size: 1.2rem;
+  color: #333;
 }
 
-.report-form .trip-details p {
+.trip-details p,
+.videos p,
+.instance-reports p {
+  margin: 0;
   margin-bottom: 5px;
+  font-size: 1rem;
+  color: #333;
 }
 
-.report-form .videos {
-  margin-top: 20px;
-  text-align: left;
-}
-
-.report-form .videos h3 {
-  margin-bottom: 10px;
+.trip-details strong,
+.instance-reports strong {
   font-weight: bold;
-  font-size: 20px;
+  color: #333;
 }
 
-.report-form .videos .button {
+.videos .button {
   display: inline-block;
-  padding: 10px 50px;
-  margin-top: 5px;
-  font-size: 16px;
-  font-weight: bold;
+  padding: 10px 20px;
+  background-color: #333;
   color: #fff;
-  background-color: #0077FF;
-  border: none;
+  font-size: 1rem;
   border-radius: 5px;
   text-decoration: none;
-  border: 2px solid #0077FF;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
-.report-form .videos .button:hover {
-  background-color: #fff;
-  color: #0077FF;
-  border: 2px solid #0077FF;
+.videos .button:hover {
+  background-color: #555;
 }
 
-.report-form .videos {
-  margin-top: 20px;
-  text-align: left;
-}
-
-.report-form .instance-reports {
-  margin-top: 20px;
-  text-align: left;
-  margin-bottom: 50px;
-}
-
-.report-form .instance-reports h3 {
-  margin-bottom: 10px;
-  font-weight: bold;
-  font-size: 20px;
-}
-
-.report-form .instance-report {
-  margin-top: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
+.instance-report {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #f4f4f4;
   border-radius: 5px;
-  padding-left: 30px;
-  padding-right: 0px;
+  max-height: 300px !important;
+  overflow-y: scroll !important;
 }
 
-.report-form .instance-report p {
+.instance-report p {
+  margin: 0;
   margin-bottom: 5px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.instance-report strong {
+  font-weight: bold;
+  color: #333;
 }

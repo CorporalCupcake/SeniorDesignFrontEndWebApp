@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './tripReport.styles.css';
 import Loading from '../loading/loading.component';
 
@@ -17,6 +17,49 @@ const TripReport = ({ tripData }) => {
         return finalDateTimeStr;
     }
 
+    const [topTwoWarnings, setTopTwoWarnings] = useState('')
+    const [topTwoClassifications, setTopTwoClassifications] = useState('')
+
+    useEffect(() => {
+        const func = () => {
+            const frequencyTable = {};
+
+            tripData.InstanceReports.L.forEach((obj) => {
+                const { classification, warning } = obj.M;
+
+                if (classification && classification.S) {
+                    const cls = classification.S;
+                    frequencyTable[cls] = (frequencyTable[cls] || 0) + 1;
+                }
+
+                if (warning && warning.S) {
+                    const wrn = warning.S;
+                    frequencyTable[wrn] = (frequencyTable[wrn] || 0) + 1;
+                }
+            });
+
+            const sortedFreqTable = Object.entries(frequencyTable).sort((a, b) => b[1] - a[1]);
+
+            const topTwoClassifications = sortedFreqTable
+                .filter(([key]) => key.includes("_"))
+                .slice(0, 2)
+                .map(([key]) => key);
+
+            const topTwoWarnings = sortedFreqTable
+                .filter(([key]) => key.includes("|"))
+                .slice(0, 2)
+                .map(([key]) => key);
+
+            setTopTwoWarnings(topTwoWarnings);
+            setTopTwoClassifications(topTwoClassifications);
+        }
+
+        func();
+    }, [tripData])
+
+    console.log(topTwoClassifications)
+    console.log(topTwoWarnings)
+
     return (<>
         {!tripData ? <Loading /> :
             <div className="report-form">
@@ -29,6 +72,9 @@ const TripReport = ({ tripData }) => {
                     <p><strong>End Time:</strong> {convertTime(tripData.EndTime.S)}</p>
                     <p><strong>Risk Level:</strong> {tripData.RiskLevel.N}</p>
                     <p><strong>Accident:</strong> {tripData.Accident.BOOL ? 'Yes' : 'No'}</p>
+                    <p><strong>Top 2 Frequent Warnings:</strong> {topTwoWarnings}</p>
+                    <p><strong>Top 2 Frequent Classifications:</strong> {topTwoClassifications}</p>
+
                 </div>
 
                 <div className="videos">
@@ -54,7 +100,6 @@ const TripReport = ({ tripData }) => {
                     ))}
                 </div>
             </div>}
-
     </>);
 };
 

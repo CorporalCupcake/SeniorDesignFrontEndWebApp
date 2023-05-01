@@ -61,3 +61,22 @@ p {
         transform: scale(1);
     }
 }
+
+
+@keyframes bike-move {
+    0% {
+        transform: translateX(0);
+    }
+    
+    100% {
+        transform: translateX(calc(100vw + 100px));
+        /* 100px is the width of the bike icon */
+    }
+}
+
+.bike_icon {
+    margin-bottom: 400px;
+    position: absolute;
+    left: -100px;
+    animation: bike-move 7s linear infinite;
+}
