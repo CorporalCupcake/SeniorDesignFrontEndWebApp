@@ -11,6 +11,7 @@ import TripsManagmentPage from "./pages/TripsManagmentPage/TripsManagmentPage";
 import AuthenticatedRoute from "./components/authenticatedRoute.component";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import ViewUserPage from "./pages/ViewUserPage/ViewUserPage";
+import BikeManagmentPage from "./pages/BikeManagmentPage/BikeManagmentPage";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <AuthenticatedRoute exact={true} path="/create-user" component={CreateUserPage} />
         <AuthenticatedRoute exact={true} path="/manage-trips" component={TripsManagmentPage} />
         <AuthenticatedRoute exact={true} path="/view-users" component={ViewUserPage} />
+        <AuthenticatedRoute exact={true} path="/manage-bikes" component={BikeManagmentPage} />
         <Route path="" component={ErrorPage} />
       </Switch>
     </div>

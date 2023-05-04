@@ -1,10 +1,10 @@
 import React from "react";
 
-import ViewUserPage from "./ViewUserPage/ViewUserPage";
+import CreateBike from "../components/createBike/createBiike.component";
 
 const SandboxPage =() => {
     return (
-        <ViewUserPage/>
+        <CreateBike/>
     )
 
 }

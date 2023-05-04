@@ -3,6 +3,11 @@ import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb"
 import { creds } from "./awsKey";
 
 const AWS = require('aws-sdk');
+const dynamodb = new AWS.DynamoDB({
+    credentials: creds,
+    region: 'us-east-1',
+    removeUndefinedValues: true,
+});
 
 // ----------------------- DYNAMO DB CONFIGURATION FILES -----------------------
 
@@ -260,36 +265,49 @@ export const generateDriverBehavioralReport = async (tripIDs) => {
     }
 }
 
-export async function getBikes(pageNumber, pageSize, userEmail, band) {
+export async function getBikes(pageNumber, pageSize, listOfEmails, getNulls) {
+
+    if (getNulls) {
+        listOfEmails.push('unassigned');
+    }
+
+
+    const scanParams = {
+        TableName: 'Bike',
+        IndexName: 'DriverEmailGSI',
+        FilterExpression: listOfEmails.map((_, i) => `DriverEmail = :email${i}`).join(' OR '),
+        ExpressionAttributeValues: listOfEmails.reduce((acc, email, i) => {
+            acc[`:email${i}`] = { S: email };
+            return acc;
+        }, {}),
+    };
+
     try {
-        const params = {
-            TableName: 'Bike',
-            Limit: pageSize,
-            ExclusiveStartKey: (pageNumber - 1) * pageSize,
-            FilterExpression: 'DriverEmail = :driverEmail',
-            ExpressionAttributeValues: {
-                ':driverEmail': {
-                    S: userEmail
-                }
-            }
+        const data = await ddbClient.send(new ScanCommand(scanParams));
+        data.Items = data.Items.map(item => AWS.DynamoDB.Converter.unmarshall(item));
+
+        const totalItems = data.Count;
+        const itemsPerPage = pageSize;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+        const startIndex = (pageNumber - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+
+        const paginatedResults = data.Items.slice(startIndex, endIndex);
+
+        return {
+            totalItems,
+            totalPages,
+            itemsPerPage,
+            pageNumber,
+            results: paginatedResults,
         };
-
-        if (band === 'MANAGER') {
-            params.FilterExpression = 'attribute_not_exists(DriverEmail) OR DriverEmail IN (:driverEmail, :responsibilityList)';
-            params.ExpressionAttributeValues[':responsibilityList'] = {
-                L: [{
-                    S: userEmail
-                }]
-            };
-        }
-
-        const result = await ddbClient.send(new ScanCommand(params));
-        return result;
-    } catch (error) {
-        console.error('Error retrieving bikes:', error);
-        throw error;
+    } catch (err) {
+        console.error(err);
+        throw new Error('Error retrieving bikes by driver emails');
     }
 }
+
 
 
 // FilterExpression: 'attribute_not_exists(DriverEmail) OR DriverEmail = :driverEmail',
@@ -301,7 +319,7 @@ export const getBehaviouralReportById = async (id) => {
             ':id': { S: id }
         },
         TableName: "BehaviouralReports",
-    };
+    }
 
     try {
         const command = new QueryCommand(params);
@@ -358,8 +376,6 @@ export const getUserEmergencyContact = async (driverEmail) => {
         }
 
         const [result] = Items;
-
-        console.log(result)
 
         return AWS.DynamoDB.Converter.unmarshall(result);
     } catch (err) {
