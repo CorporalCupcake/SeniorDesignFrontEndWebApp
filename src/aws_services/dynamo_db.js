@@ -1,4 +1,4 @@
-import { GetItemCommand, DynamoDBClient, PutItemCommand, QueryCommand, ScanCommand, BatchGetItemCommand } from "@aws-sdk/client-dynamodb";
+import { GetItemCommand, DynamoDBClient, PutItemCommand, QueryCommand, ScanCommand, BatchGetItemCommand, UpdateItemCommand, DeleteItemCommand } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb"
 import { creds } from "./awsKey";
 
@@ -382,5 +382,79 @@ export const getUserEmergencyContact = async (driverEmail) => {
         console.error(`Failed to retrieve emergency contacts for driver email: ${driverEmail}`);
         console.error(err);
         throw err;
+    }
+}
+
+export async function createBike(bike) {
+    const params = {
+        TableName: "Bike",
+        Item: {
+            BikeID: { S: bike.bikeid },
+            EmergencyContacts: { L: [] },
+            DriverEmail: { S: 'unassigned' },
+            Sensors: {
+                L: bike.sensors.map(sensor => ({
+                    M: {
+                        name: { S: sensor.name },
+                        location: { S: sensor.location },
+                        faulty: { BOOL: sensor.faulty },
+                    }
+                }))
+            },
+        },
+    };
+
+    try {
+        // Call the PutItemCommand with the defined parameters
+        const command = new PutItemCommand(params);
+        const result = await ddbClient.send(command);
+
+        console.log("Bike object created successfully:", result);
+    } catch (err) {
+        console.error("Error creating bike object:", err);
+    }
+}
+
+export async function updateBike(bike) {
+    const params = {
+        TableName: "Bike", // Replace with your table name
+        Key: { BikeID: { S: bike.BikeID } },
+        UpdateExpression: "SET DriverEmail = :email, Sensors = :sensors",
+        ExpressionAttributeValues: {
+            ":email": { S: bike.DriverEmail },
+            ":sensors": { L: [] },
+        },
+    };
+
+    bike.Sensors.forEach((sensor, index) => {
+        params.ExpressionAttributeValues[":sensors"].L.push({
+            M: {
+                name: { S: sensor.name },
+                location: { S: sensor.location },
+                faulty: { BOOL: sensor.faulty },
+            },
+        });
+    });
+
+    try {
+        const data = await ddbClient.send(new UpdateItemCommand(params));
+        console.log("Bike updated successfully:", data);
+    } catch (err) {
+        console.error("Error updating bike:", err);
+    }
+}
+
+
+export async function deleteBike(bikeID) {
+    const params = {
+        TableName: "Bike", // Replace with your table name
+        Key: { BikeID: { S: bikeID } },
+    };
+
+    try {
+        const data = await ddbClient.send(new DeleteItemCommand(params));
+        console.log("Bike deleted successfully:", data);
+    } catch (err) {
+        console.error("Error deleting bike:", err);
     }
 }

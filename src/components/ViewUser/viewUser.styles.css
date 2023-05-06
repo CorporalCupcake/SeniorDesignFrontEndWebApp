@@ -36,6 +36,14 @@
 .user-info-value {
     width: 70%;
     font-size: 16px;
+    color: black;
+}
+
+.user-info-value p {
+    margin-top: 10px;
+    width: 70%;
+    font-size: 16px;
+    color: black;
 }
 
 .user-info-value li {

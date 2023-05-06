@@ -59,10 +59,16 @@ const ViewUser = ({ email }) => {
                     <div className="user-info-label">Company:&nbsp;</div>
                     <div className="user-info-value">{user.COMPANY.S}</div>
                 </div>
-                <div className="user-info-row">
-                    <div className="user-info-label">Responsibility List:</div>
-                    <div className="user-info-value">{user.RESPONSIBILITY_LIST.L.map(item => item.S).join(", ")}</div>
-                </div>
+                {user.BAND.S === 'DRIVER' ?
+                    <div className="user-info-row">
+                        <div className="user-info-label"> Bike ID:</div>
+                        <div className="user-info-value">{user.RESPONSIBILITY_LIST.L.map(item => item.S).join(", ")}</div>
+                    </div>
+                    :
+                    <div className="user-info-row">
+                        <div className="user-info-label">Responsibility List:</div>
+                        <div className="user-info-value">{user.RESPONSIBILITY_LIST.L.map(item => item.S).join(", ")}</div>
+                    </div>}
 
                 {user.BAND.S === 'DRIVER' ? <div className="user-info-row">
                     <div className="user-info-label">Emergency Contacts:</div>

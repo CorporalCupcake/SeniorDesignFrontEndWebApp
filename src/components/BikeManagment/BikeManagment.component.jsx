@@ -1,18 +1,23 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useReducer } from "react";
 import Loading from '../loading/loading.component'
-
-import { getBikes } from "../../aws_services/dynamo_db";
-
-
+import { getBikes, deleteBike } from "../../aws_services/dynamo_db";
 import { selectUser } from "../../redux/auth/auth.selector";
 import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
-
-
 import "./BikeManagment.styles.css";
+import { withRouter } from "react-router-dom";
 
-const BikeManagment = ({ user }) => {
+
+
+const BikeManagment = ({ user, history }) => {
+
+    const handleDelete = (bikeID) =>{
+        deleteBike(bikeID);
+        alert('Bike deleted.')
+        forceUpdate()
+    }
+
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
 
     const [pageNumber, setPageNumber] = useState(1);
     const [pageSize, setPageSize] = useState(2);
@@ -22,7 +27,7 @@ const BikeManagment = ({ user }) => {
 
     useEffect(() => {
         async function fetchBikes() {
-            const rl = [];
+            let rl = [];
 
             user.BAND.S === 'DRIVER'
                 ? rl = [user.EMAIL.S]
@@ -55,6 +60,13 @@ const BikeManagment = ({ user }) => {
         }
     };
 
+    const handleCLickToEdit = (item) => {
+        history.push({    // no need
+            pathname: "/update-bike",
+            state: { item }
+        });
+    }
+
     if (data === null) {
         return <Loading />
     }
@@ -66,22 +78,24 @@ const BikeManagment = ({ user }) => {
                     <th>Bike ID</th>
                     <th>Driver Email</th>
                     <th>Prototype Sensors</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
                 {data.map((item, index) => (
-                    <tr key={index}>
-                        <td>{item.BikeID}</td>
-                        <td>{item.DriverEmail}</td>
-                        <td>
+                    <tr key={index} >
+                        <td onClick={() => handleCLickToEdit(item)}>{item.BikeID}</td>
+                        <td onClick={() => handleCLickToEdit(item)}>{item.DriverEmail}</td>
+                        <td onClick={() => handleCLickToEdit(item)}>
                             <ul>
                                 {item.Sensors.map((sensor, index) => (
-                                    <li key={index}>
+                                    <li key={index} >
                                         {sensor.name} - {sensor.location} | {sensor.faulty ? 'Faulty' : 'Working'}
                                     </li>
                                 ))}
                             </ul>
                         </td>
+                        <td><button onClick={()=>handleDelete(item.BikeID)} className="delete-button">Delete</button></td>
                     </tr>
                 ))}
             </tbody>
@@ -99,4 +113,4 @@ const mapStateToProps = createStructuredSelector({
     user: selectUser
 });
 
-export default connect(mapStateToProps)(BikeManagment);
+export default withRouter(connect(mapStateToProps)(BikeManagment));

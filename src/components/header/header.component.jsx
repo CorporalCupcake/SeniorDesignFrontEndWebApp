@@ -37,6 +37,7 @@ const Header = ({ user, history }) => {
                         <Nav.Link onClick={() => history.push('/view-users')}>View Users</Nav.Link>
                         <Nav.Link onClick={() => history.push('/manage-trips')}>Manage Trips</Nav.Link>
                         <Nav.Link onClick={() => history.push('/manage-bikes')}>Manage Bikes</Nav.Link>
+                        <Nav.Link onClick={() => history.push('/create-bike')}>Create Bike</Nav.Link>
                         <Nav.Link onClick={() => history.push('/sandbox')}>Sandbox</Nav.Link>
                     </Nav>
 

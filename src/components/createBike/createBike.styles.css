@@ -1,0 +1,83 @@
+/* Form container */
+.create-bike {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Form inputs */
+.create-bike label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+.create-bike .sensor-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-bike .sensor-row .remove-sensor-btn {
+    margin-left: 50px;
+    
+}
+
+.create-bike input[type="text"],
+.create-bike select {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.create-bike select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='6' viewBox='0 0 12 6'%3E%3Cpath fill='%23666666' d='M6 6l6-6H0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 12px 6px;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+/* Add sensor button */
+.create-bike button {
+    display: inline-block;
+    margin-right: 10px;
+    padding: 8px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #f06d48;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.create-bike button:hover {
+    background-color: #e24c2c;
+}
+
+/* Sensor list */
+.create-bike h3 {
+    margin-top: 30px;
+    font-size: 20px;
+    color: #333;
+}
+
+.create-bike p {
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Faulty sensors */
+.create-bike .faulty {
+    color: #f00;
+    font-weight: 600;
+}
