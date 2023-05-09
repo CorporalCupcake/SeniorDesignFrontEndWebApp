@@ -18,7 +18,7 @@ import "./tripsManagment.styles.css";
 const TripsManagment = ({ user }) => {
 
     const [pageNumber, setPageNumber] = useState(1);
-    const [pageSize, setPageSize] = useState(100);
+    const [pageSize, setPageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
 
     const [tripReports, setTripReports] = useState(null);
@@ -28,6 +28,9 @@ const TripsManagment = ({ user }) => {
 
     const [driverEmail, setDriverEmail] = useState('');
     const [viewBR, setViewBR] = useState(false)
+    const [comments, setComments] = useState("");
+
+
 
     const responsibilityList = user.RESPONSIBILITY_LIST.L.map((email, index) => {
         return (
@@ -63,8 +66,6 @@ const TripsManagment = ({ user }) => {
 
         fetchTripReports();
     }, [driverEmail, pageNumber, pageSize]);
-
-
 
     const handleEmailChange = (event) => {
         setDriverEmail(event.target.value);
@@ -106,7 +107,7 @@ const TripsManagment = ({ user }) => {
     }
 
     if (viewBR === true) {
-        return <BehaviourReport tripIDs={selectedTripIds} />
+        return <BehaviourReport tripIDs={selectedTripIds} comment={comments} />
     }
 
 
@@ -116,7 +117,7 @@ const TripsManagment = ({ user }) => {
             <div className="label_select">Driver Email:</div>
             <select onChange={handleEmailChange} value={driverEmail}>
                 <option value="">Select Email</option>
-                {responsibilityList}
+                {user.BAND.S === 'DRIVER' ? <option key={user.EMAIL.S} value={user.EMAIL.S}>{user.EMAIL.S}</option> : responsibilityList}
             </select>
         </div>
 
@@ -143,7 +144,7 @@ const TripsManagment = ({ user }) => {
                         <td>{convertTime(item.StartTime.S)}</td>
                         <td>{convertTime(item.EndTime.S)}</td>
                         <td>{item.RiskLevel.N}</td>
-                        <td><div className='click-report'onClick={() => setTripReportToView(item)}>
+                        <td><div className='click-report' onClick={() => setTripReportToView(item)}>
                             <IconContext.Provider value={{ color: 'green', size: '50px' }}>
                                 <HiOutlineDocumentReport />
                             </IconContext.Provider>
@@ -159,6 +160,12 @@ const TripsManagment = ({ user }) => {
             <button className='next-button' onClick={handleNextPage} disabled={pageNumber === totalPages}>Next</button>
         </div>
 
+        <input
+            type="text"
+            value={comments}
+            onChange={(e) => setComments(e.target.value)}
+            placeholder="Enter comments for the behavioral report"
+        />
         <button className='button-br' onClick={() => setViewBR(true)}>Generate Behavioural Report</button>
     </>)
 }

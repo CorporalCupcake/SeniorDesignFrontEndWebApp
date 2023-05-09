@@ -8,7 +8,7 @@ import { withRouter } from "react-router-dom";
 import './TripsManagmentPage.css'
 import TripsManagment from "../../components/tripsManagment/tripsManagment.component";
 
-const TripsViewPage = ({ user, history }) => {
+const TripsViewPage = ({  }) => {
 
     return (
 

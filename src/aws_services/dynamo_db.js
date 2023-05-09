@@ -1,6 +1,7 @@
 import { GetItemCommand, DynamoDBClient, PutItemCommand, QueryCommand, ScanCommand, BatchGetItemCommand, UpdateItemCommand, DeleteItemCommand } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, UpdateCommand } from "@aws-sdk/lib-dynamodb"
 import { creds } from "./awsKey";
+import axios from "axios";
 
 const AWS = require('aws-sdk');
 const dynamodb = new AWS.DynamoDB({
@@ -216,28 +217,29 @@ export const getMessagesUsingRecieverEmail = async (receiverEmail, onlyStarred, 
 
 }
 
-export const generateDriverBehavioralReport = async (tripIDs) => {
+export const generateDriverBehavioralReport = async (tripIDs, comment) => {
     const params = {
         RequestItems: {
             TripReport: {
-                Keys: tripIDs.map(tripID => ({ TripID: { S: tripID } })),
+                Keys: tripIDs.map((tripID) => ({ TripID: { S: tripID } })),
                 ProjectionExpression: 'InstanceReports, RiskLevel',
-            }
-        }
+            },
+        },
     };
 
     try {
         const results = await ddbClient.send(new BatchGetItemCommand(params));
-        const instances = results.Responses.TripReport.map(trip => trip.InstanceReports.L).flat();
-        const riskLevels = results.Responses.TripReport.map(trip => parseInt(trip.RiskLevel.N));
+        const instances = results.Responses.TripReport.map((trip) => trip.InstanceReports.L).flat();
+        console.log(instances)
+        const riskLevels = results.Responses.TripReport.map((trip) => parseInt(trip.RiskLevel.N));
 
         const avgRiskLevel = riskLevels.reduce((sum, level) => sum + level, 0) / riskLevels.length;
 
         const maneuvers = instances.reduce((maneuvers, instance) => {
-            const warning = instance.M.warning.S.trim();
-            if (warning.length > 0) {
-                const parts = warning.split('|').filter(part => part.trim().length > 0);
-                parts.forEach(part => {
+            const classification = instance.M.classification.S.trim();
+            if (classification.length > 0) {
+                const parts = classification.split('|').filter((part) => part.trim().length > 0);
+                parts.forEach((part) => {
                     if (part in maneuvers) {
                         maneuvers[part]++;
                     } else {
@@ -248,22 +250,37 @@ export const generateDriverBehavioralReport = async (tripIDs) => {
             return maneuvers;
         }, {});
 
-        const mostFrequentManeuver = Object.entries(maneuvers).reduce((mostFrequent, [maneuver, count]) => {
-            if (count > mostFrequent.count) {
-                return { maneuver, count };
-            } else {
-                return mostFrequent;
-            }
-        }, { maneuver: '', count: 0 });
+        const mostFrequentManeuver = Object.entries(maneuvers).reduce(
+            (mostFrequent, [maneuver, count]) => {
+                if (count > mostFrequent.count) {
+                    return { maneuver, count };
+                } else {
+                    return mostFrequent;
+                }
+            },
+            { maneuver: '', count: 0 }
+        );
+
+        const riskyInstancesCount = instances.filter((instance) => {
+            const classification = instance.M.classification.S.trim();
+            return classification.includes(mostFrequentManeuver.maneuver);
+        }).length;
+
+        console.log(instances)
+
+        const percentageOfRiskyInstances = (riskyInstancesCount / instances.length) * 100;
 
         return {
             avgRiskLevel,
             mostFrequentManeuver,
+            percentageOfRiskyInstances,
+            comment,
         };
     } catch (err) {
-        console.error(err)
+        console.error(err);
     }
-}
+};
+
 
 export async function getBikes(pageNumber, pageSize, listOfEmails, getNulls) {
 
@@ -327,6 +344,7 @@ export const getBehaviouralReportById = async (id) => {
 
         if (response.Count === 1) {
             return (AWS.DynamoDB.Converter.unmarshall(response.Items[0]));
+
         } else {
             return false;
         }
@@ -337,11 +355,11 @@ export const getBehaviouralReportById = async (id) => {
 }
 
 
-export const insertBehaviouralReport = async ({ tripIDs, report }) => {
+export const insertBehaviouralReport = async ({ tripIDs, report, comment }) => {
     const tripIDs_S = tripIDs.join()
     const params = {
         TableName: "BehaviouralReports",
-        Item: AWS.DynamoDB.Converter.marshall({ tripIDs: tripIDs_S, report }),
+        Item: AWS.DynamoDB.Converter.marshall({ tripIDs: tripIDs_S, report, comment }),
     };
 
     try {
@@ -458,3 +476,109 @@ export async function deleteBike(bikeID) {
         console.error("Error deleting bike:", err);
     }
 }
+
+// Function to delete a user by ID from the "users" table
+export async function deleteUserById(userId) {
+    const params = {
+        TableName: 'users',
+        Key: {
+            EMAIL: { S: userId }
+        }
+    };
+
+    try {
+        const command = new DeleteItemCommand(params);
+        await ddbClient.send(command);
+        console.log(`User with ID ${userId} has been deleted successfully.`);
+    } catch (error) {
+        console.error('Error deleting user:', error);
+    }
+}
+
+export async function updateUserEmergencyContact(email, emergencyContacts) {
+    // const params = {
+    //     TableName: "users", // Replace with your table name
+    //     Key: { EMAIL: { S: email } },
+    //     UpdateExpression: "SET EmergencyContacts = :emergencyContacts",
+    //     ExpressionAttributeValues: {
+    //         ":emergencyContacts": { L: [] },
+    //     },
+    // };
+
+    // emergencyContacts.forEach((contact, index) => {
+    //     params.ExpressionAttributeValues[":emergencyContacts"].L.push({
+    //         M: {
+    //             name: { S: contact.name },
+    //             email: { S: contact.email },
+    //             phoneNumber: { S: contact.phoneNumber },
+    //         },
+    //     });
+    // });
+
+    // try {
+    //     const data = await ddbClient.send(new UpdateItemCommand(params));
+    //     console.log("User emergency contacts updated successfully:", data);
+    // } catch (err) {
+    //     console.error("Error updating user emergency contacts:", err);
+    // }
+
+    console.log(emergencyContacts)
+    const res = await getBikes(1, 100, [email], false);
+    const bike_id = await res.results[0].BikeID;
+    console.log(bike_id)
+
+    const r = await axios.put(`https://iotblackbox.azurewebsites.net/bikes/${bike_id}/emergency_contacts`, emergencyContacts);
+    console.log(r)
+}
+
+export async function updateEmergencyContactsInBikeTable(email, newEmergencyContacts) {
+    const convertedEmergencyContacts = newEmergencyContacts.map(contact => ({
+        M: {
+            email: { S: contact.email },
+            name: { S: contact.name },
+            phoneNumber: { S: contact.phoneNumber }
+        }
+    }));
+
+    try {
+        const res = await getBikes(1, 100, [email], false);
+        const bike_id = res.results[0].BikeID;
+
+        const params = {
+            TableName: 'Bike',
+            Key: { BikeID: { S: bike_id } },
+            UpdateExpression: 'SET EmergencyContacts = :emergencyContacts',
+            ExpressionAttributeValues: {
+                ':emergencyContacts': { L: convertedEmergencyContacts },
+            },
+        };
+
+        const command = new UpdateItemCommand(params);
+        const data = await ddbClient.send(command);
+        console.log('Emergency contacts updated successfully:', data);
+    } catch (err) {
+        console.error('Error updating emergency contacts:', err);
+    }
+}
+
+
+
+export async function removeUserFromResponsibilityList(email, emailToRemove) {
+    const params = {
+        TableName: "users", // Replace with your table name
+        Key: { EMAIL: { S: email } },
+        UpdateExpression: "DELETE RESPONSIBILITY_LIST :emailToRemove",
+        ExpressionAttributeValues: {
+            ":emailToRemove": { L: [{ S: emailToRemove }] },
+        },
+        ConditionExpression: "contains(RESPONSIBILITY_LIST, :emailToRemove)",
+    };
+
+    try {
+        const data = await ddbClient.send(new UpdateItemCommand(params));
+        console.log("User removed from responsibility list:", data);
+    } catch (err) {
+        console.error("Error removing user from responsibility list:", err);
+    }
+}
+
